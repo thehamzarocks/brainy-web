@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HomePageContent from "./HomePageContent";
 import Layout from "./Layout";
 import StartPage from "./StartPage";
+import ScratchFile from "./ScratchFile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +40,9 @@ function App() {
             </Route>
             <Route path="/start">
               <StartPage/>
+            </Route>
+            <Route path="/scratchFile">
+              <ScratchFile/>
             </Route>
             <Route path="/">
               <HomePageContent />
