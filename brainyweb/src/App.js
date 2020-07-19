@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HomePageContent from "./HomePageContent";
 import Layout from "./Layout";
+import StartPage from "./StartPage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,14 +37,8 @@ function App() {
                 About Section
               </Typography>
             </Route>
-            <Route path="/topics">
-              <Typography
-                variant="h5"
-                className={classes.sectionPlaceHolder}
-                gutterBottom
-              >
-                Topics Section
-              </Typography>
+            <Route path="/start">
+              <StartPage/>
             </Route>
             <Route path="/">
               <HomePageContent />

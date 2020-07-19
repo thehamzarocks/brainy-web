@@ -28,9 +28,11 @@ function HomePageContent() {
         <Button
           variant="contained"
           color="primary"
+          component={Link}
+          to={"/start"}
           className={classes.startButton}
         >
-          Get Started
+            Get Started
         </Button>
       </Grid>
 
