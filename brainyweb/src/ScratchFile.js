@@ -8,6 +8,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
+import SortableComponent from "./sortable";
 
 const useStyles = makeStyles(() => ({
   fileHeader: {
@@ -51,7 +52,7 @@ TabPanel.propTypes = {
 function ScatchFile() {
   const classes = useStyles();
 
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(0);
   const [taskValue, setTaskValue] = React.useState("");
   const [infoValue, setInfoValue] = React.useState("");
 
@@ -99,10 +100,12 @@ function ScatchFile() {
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
+            <SortableComponent />
+            <Typography variant="h6">Add Task</Typography>
             <TextField
               spellCheck="false"
               fullWidth="true"
-              rows="30"
+              rows="5"
               id="standard-multiline-flexible"
               multiline
               value={taskValue}
@@ -110,7 +113,7 @@ function ScatchFile() {
             />
           </TabPanel>
           <TabPanel value={value} index={1}>
-          <TextField
+            <TextField
               spellCheck="false"
               fullWidth="true"
               rows="30"
