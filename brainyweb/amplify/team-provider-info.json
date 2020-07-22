@@ -1,0 +1,23 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-brainyweb-dev-191907-authRole",
+            "UnauthRoleArn": "arn:aws:iam::788919720341:role/amplify-brainyweb-dev-191907-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::788919720341:role/amplify-brainyweb-dev-191907-authRole",
+            "Region": "ap-southeast-1",
+            "DeploymentBucketName": "amplify-brainyweb-dev-191907-deployment",
+            "UnauthRoleName": "amplify-brainyweb-dev-191907-unauthRole",
+            "StackName": "amplify-brainyweb-dev-191907",
+            "StackId": "arn:aws:cloudformation:ap-southeast-1:788919720341:stack/amplify-brainyweb-dev-191907/1e750000-cc22-11ea-af50-0a234791d192",
+            "AmplifyAppId": "d12hqgcd0wi9us"
+        },
+        "categories": {
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d12hqgcd0wi9us",
+                    "type": "manual"
+                }
+            }
+        }
+    }
+}
