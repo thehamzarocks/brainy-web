@@ -9,6 +9,7 @@ import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import SortableComponent from "./sortable";
+import AddTaskAccordions from "./AddTaskAccordion";
 
 const useStyles = makeStyles(() => ({
   fileHeader: {
@@ -100,16 +101,7 @@ function ScatchFile() {
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
-            <Typography variant="h6">Add Task</Typography>
-            <TextField
-              spellCheck="false"
-              fullWidth={true}
-              rows="3"
-              id="standard-multiline-flexible"
-              multiline
-              value={taskValue}
-              onChange={handleTaskChange}
-            />
+            <AddTaskAccordions />
             <SortableComponent />
           </TabPanel>
           <TabPanel value={value} index={1}>

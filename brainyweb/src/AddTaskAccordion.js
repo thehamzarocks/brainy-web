@@ -6,7 +6,7 @@ import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 const Accordion = withStyles({
   root: {
@@ -49,8 +49,9 @@ const AccordionDetails = withStyles((theme) => ({
   },
 }))(MuiAccordionDetails);
 
-export default function TaskAccordion(props) {
+export default function AddTaskAccordion() {
   const [expanded, setExpanded] = React.useState("");
+  const [newTaskSummary, setNewTaskSummary] = React.useState("");
   //   const [infoValue, setInfoValue] = React.useState("some info");
 
   //   const handleInfoChange = (event) => {
@@ -61,6 +62,11 @@ export default function TaskAccordion(props) {
     setExpanded(newExpanded ? panel : false);
   };
 
+  const handleAddTaskChange =  (event) => {
+    setNewTaskSummary(event.target.value);
+  };
+
+//   return (<React.Fragment/>)
   return (
     <div>
       <Accordion
@@ -69,6 +75,14 @@ export default function TaskAccordion(props) {
         onChange={handleChange("panel1")}
       >
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+          <Typography variant="h6">
+            Add Task
+            <Button onClick={() => console.log("hello")}>
+              <AddCircleIcon />
+            </Button>
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
           <TextField
             spellCheck="false"
             fullWidth={true}
@@ -77,22 +91,8 @@ export default function TaskAccordion(props) {
             multiline
             onClick={(event) => event.stopPropagation()}
             onFocus={(event) => event.stopPropagation()}
-            value={props.taskSummaryValue}
-            onChange={props.setTaskSummaryValue}
-          />
-          <Typography variant="h6">
-            <Button onClick={() => console.log("hello")}><AddCircleIcon/></Button>
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <TextField
-            spellCheck="false"
-            fullWidth={true}
-            rows="5"
-            id="standard-multiline-flexible"
-            multiline
-            value={props.value}
-            // onChange={}
+            value={newTaskSummary}
+            onChange={handleAddTaskChange}
           />
         </AccordionDetails>
       </Accordion>

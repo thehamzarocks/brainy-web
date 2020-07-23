@@ -28,7 +28,7 @@ const SortableItem = SortableElement(({ value, changeTaskSummary }) => {
   return (
     <>
       <TaskAccordion
-        taskSummaryValue={value.text}
+        taskSummaryValue={value.summary}
         setTaskSummaryValue={changeTaskSummary}
       />
     </>
