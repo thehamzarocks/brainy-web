@@ -100,22 +100,22 @@ function ScatchFile() {
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
-            <SortableComponent />
             <Typography variant="h6">Add Task</Typography>
             <TextField
               spellCheck="false"
-              fullWidth="true"
-              rows="5"
+              fullWidth={true}
+              rows="3"
               id="standard-multiline-flexible"
               multiline
               value={taskValue}
               onChange={handleTaskChange}
             />
+            <SortableComponent />
           </TabPanel>
           <TabPanel value={value} index={1}>
             <TextField
               spellCheck="false"
-              fullWidth="true"
+              fullWidth={true}
               rows="30"
               id="standard-multiline-flexible"
               multiline
