@@ -11,8 +11,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { Link } from "react-router-dom";
 import TaskAccordion from "./TaskAccordion";
-import { useSelector } from "react-redux";
-import { selectCurrentFile } from "./store/fileSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { selectCurrentFile, updateFile } from "./store/fileSlice";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,17 +29,30 @@ const SortableItem = SortableElement(({ value, changeTaskSummary }) => {
   const classes = useStyles();
   return (
     <>
-      <TaskAccordion
-        taskId={value.taskId}
-      />
+      <TaskAccordion taskId={value.taskId} />
     </>
   );
 });
 
+const compareTaskPriorities = (task1, task2) => {
+  if (task1.priority < task2.priority) {
+    return -1;
+  }
+
+  if (task1.priority > task2.priority) {
+    return 1;
+  }
+
+  return 0;
+};
+
 const SortableList = SortableContainer(({ items, changeTaskSummary }) => {
+  const tasks = [...items];
+  tasks.sort(compareTaskPriorities);
+  // const sortedTasks = [... items.sort(compareTaskPriorities)];
   return (
     <ul>
-      {items.map((value, index) => (
+      {tasks.map((value, index) => (
         <SortableItem
           changeTaskSummary={(event) => changeTaskSummary(event, value.id)}
           key={`item-${value.id}`}
@@ -53,6 +66,9 @@ const SortableList = SortableContainer(({ items, changeTaskSummary }) => {
 
 function SortableComponent() {
   const classes = useStyles();
+
+  const dispatch = useDispatch();
+
   const currentFile = useSelector(selectCurrentFile);
 
   const tasks = currentFile.tasks;
@@ -66,6 +82,25 @@ function SortableComponent() {
   // ]);
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
+    if (oldIndex === newIndex) {
+      return;
+    }
+
+    //TODO: implement behaviour where oldIndex > newIndex
+    const updatedTasks = tasks.map(task => {
+      if (task.priority > oldIndex && task.priority <= newIndex) {
+        return {...task, priority: task.priority-1};
+      }
+      if (task.priority === oldIndex) {
+        return {...task, priority: newIndex};
+      }
+      return {...task}
+    })
+
+    const updatedFile = {... currentFile, tasks: updatedTasks};
+    dispatch(updateFile(updatedFile));
+    // task has reduced priority
+
     //TODO: implement
     // setTasks(arrayMove(tasks, oldIndex, newIndex));
   };

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
@@ -9,11 +9,12 @@ import Tab from "@material-ui/core/Tab";
 import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import SortableComponent from "./sortable";
-import AddTaskAccordions from "./AddTaskAccordion";
+import AddTaskAccordion from "./AddTaskAccordion";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { selectFile, updateFile, updateCurrentFile } from "./store/fileSlice";
 import axios from "axios";
+import { current } from "@reduxjs/toolkit";
 
 const useStyles = makeStyles(() => ({
   fileHeader: {
@@ -89,6 +90,17 @@ function ScatchFile() {
     dispatch(updateFile(updatedCurrentFile));
   };
 
+  const handleSave = (event) => {
+    axios
+      .put(
+        "https://lyjcnc.deta.dev/files/" + currentFile.key,
+        currentFile
+      )
+      .then((response) => {
+        console.log("Save succesful!");
+      });
+  };
+
   return (
     <React.Fragment>
       <div className={classes.fileHeader}>
@@ -102,7 +114,9 @@ function ScatchFile() {
           <Button color="default">Actions</Button>
         </div>
         <div>
-          <Button color="primary">Save</Button>
+          <Button onClick={handleSave} color="primary">
+            Save
+          </Button>
         </div>
       </div>
       <form className={classes.root} noValidate autoComplete="off">
@@ -114,7 +128,7 @@ function ScatchFile() {
             </Tabs>
           </AppBar>
           <TabPanel value={value} index={0}>
-            <AddTaskAccordions />
+            <AddTaskAccordion />
             <SortableComponent />
           </TabPanel>
           <TabPanel value={value} index={1}>
@@ -129,7 +143,6 @@ function ScatchFile() {
             />
           </TabPanel>
         </div>
-        å
       </form>
     </React.Fragment>
   );

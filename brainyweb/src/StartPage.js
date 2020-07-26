@@ -48,18 +48,6 @@ function StartPage() {
 
   // const filesStatus = useSelector(selectFileStatus);
 
-  useEffect(() => {
-    axios
-      .get("https://lyjcnc.deta.dev/files/")
-      .then(function (response) {
-        dispatch(addFiles(response.data));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    // dispatch(fetchFiles());
-  }, [dispatch]);
-
   if (!files) {
     files = [];
   }

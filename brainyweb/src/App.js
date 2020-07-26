@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
@@ -9,6 +9,14 @@ import HomePageContent from "./HomePageContent";
 import Layout from "./Layout";
 import StartPage from "./StartPage";
 import ScratchFile from "./ScratchFile";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import {
+  selectAllFiles,
+  selectFileStatus,
+  addFiles,
+  fetchFiles,
+} from "./store/fileSlice";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +31,20 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    axios
+      .get("https://lyjcnc.deta.dev/files/")
+      .then(function (response) {
+        dispatch(addFiles(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    // dispatch(fetchFiles());
+  }, [dispatch]);
 
   return (
     <Container maxWidth="sm" className={classes.root}>
@@ -39,13 +61,13 @@ function App() {
               </Typography>
             </Route>
             <Route path="/start">
-              <StartPage/>
+              <StartPage />
             </Route>
-            <Route path = "/files/:fileId">
-              <ScratchFile/>
+            <Route path="/files/:fileId">
+              <ScratchFile />
             </Route>
             <Route path="/scratchFile">
-              <ScratchFile/>
+              <ScratchFile />
             </Route>
             <Route path="/">
               <HomePageContent />
