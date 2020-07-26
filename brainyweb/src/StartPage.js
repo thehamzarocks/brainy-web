@@ -46,7 +46,7 @@ function StartPage() {
   let files = useSelector(selectAllFiles);
   // const files = React.useState({ fileName: "hello", key: "123" });
 
-  const filesStatus = useSelector(selectFileStatus);
+  // const filesStatus = useSelector(selectFileStatus);
 
   useEffect(() => {
     axios
@@ -66,7 +66,7 @@ function StartPage() {
   console.log("files are" + files)
   // files = [];
   const renderedFiles = files.map((file) => (
-    <ListItem key={file.key} component={Link} to={"/" + file.key} button>
+    <ListItem key={file.key} component={Link} to={"/files/" + file.key} button>
       <ListItemText primary={file.fileName} />
     </ListItem>
   ));

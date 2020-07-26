@@ -10,6 +10,10 @@ import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import SortableComponent from "./sortable";
 import AddTaskAccordions from "./AddTaskAccordion";
+import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { selectFile, updateFile } from "./store/fileSlice";
+import axios from "axios";
 
 const useStyles = makeStyles(() => ({
   fileHeader: {
@@ -53,6 +57,11 @@ TabPanel.propTypes = {
 function ScatchFile() {
   const classes = useStyles();
 
+  const dispatch = useDispatch();
+
+  let { fileId } = useParams();
+  const currentFile = useSelector((state) => selectFile(state, fileId));
+
   const [value, setValue] = React.useState(0);
   const [taskValue, setTaskValue] = React.useState("");
   const [infoValue, setInfoValue] = React.useState("");
@@ -73,7 +82,10 @@ function ScatchFile() {
   };
 
   const handleInfoChange = (event, newValue) => {
-    setInfoValue(event.target.value);
+    // setInfoValue(event.target.value);
+    const updatedCurrentFile = { ...currentFile };
+    updatedCurrentFile.info = event.target.value;
+    dispatch(updateFile(updatedCurrentFile));
   };
 
   return (
@@ -111,11 +123,12 @@ function ScatchFile() {
               rows="30"
               id="standard-multiline-flexible"
               multiline
-              value={infoValue}
+              value={currentFile.info}
               onChange={handleInfoChange}
             />
           </TabPanel>
         </div>
+        å
       </form>
     </React.Fragment>
   );

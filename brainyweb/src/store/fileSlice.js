@@ -35,6 +35,20 @@ export const fileSlice = createSlice({
       // state.value = 5;
       console.log(state);
     },
+    updateFile: (state, action) => {
+      state.filesList =  state.filesList.map((item) => {
+        if (item.key !== action.payload.key) {
+          // This isn't the item we care about - keep it as-is
+          return item
+        }
+    
+        // Otherwise, this is the one we want - return an updated value
+        return {
+          ...item,
+          ...action.payload
+        }
+      })
+    }
   },
   //   extraReducers: {
   //     [fetchFiles.pending]: (state, action) => {
@@ -53,7 +67,7 @@ export const fileSlice = createSlice({
   //   },
 });
 
-export const { addFiles } = fileSlice.actions;
+export const { addFiles, updateFile } = fileSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -73,6 +87,13 @@ export const selectAllFiles = (state) => {
   console.log("selecting value")
   return state.appReducer.filesList;
 };
+
+export const selectFile = (state, fileId) => {
+  return state.appReducer.filesList.find(file => {
+    return file.key === fileId
+  });
+}
+
 export const selectFileStatus = (state) => state.status;
 
 export default fileSlice.reducer;

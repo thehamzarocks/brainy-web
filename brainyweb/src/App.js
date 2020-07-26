@@ -41,6 +41,9 @@ function App() {
             <Route path="/start">
               <StartPage/>
             </Route>
+            <Route path = "/files/:fileId">
+              <ScratchFile/>
+            </Route>
             <Route path="/scratchFile">
               <ScratchFile/>
             </Route>
