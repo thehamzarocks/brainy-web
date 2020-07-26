@@ -11,6 +11,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { Link } from "react-router-dom";
 import TaskAccordion from "./TaskAccordion";
+import { useSelector } from "react-redux";
+import { selectCurrentFile } from "./store/fileSlice";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,8 +30,7 @@ const SortableItem = SortableElement(({ value, changeTaskSummary }) => {
   return (
     <>
       <TaskAccordion
-        taskSummaryValue={value.summary}
-        setTaskSummaryValue={changeTaskSummary}
+        taskId={value.taskId}
       />
     </>
   );
@@ -52,17 +53,21 @@ const SortableList = SortableContainer(({ items, changeTaskSummary }) => {
 
 function SortableComponent() {
   const classes = useStyles();
-  const [tasks, setTasks] = React.useState([
-    { summary: "hello", description: "this is a hello task", id: 123 },
-    { summary: "there", description: "this is a there task", id: 512 },
-    { summary: "go", description: "this is a go task", id: 756 },
-    { summary: "nice", description: "this is a nice task", id: 534534512 },
-    { summary: "wowsss", description: "this is a wowss task", id: 523512 },
-    { summary: "try", description: "this is a try task", id: 512342 },
-  ]);
+  const currentFile = useSelector(selectCurrentFile);
+
+  const tasks = currentFile.tasks;
+  // const [tasks, setTasks] = React.useState([
+  //   { summary: "hello", description: "this is a hello task", id: 123 },
+  //   { summary: "there", description: "this is a there task", id: 512 },
+  //   { summary: "go", description: "this is a go task", id: 756 },
+  //   { summary: "nice", description: "this is a nice task", id: 534534512 },
+  //   { summary: "wowsss", description: "this is a wowss task", id: 523512 },
+  //   { summary: "try", description: "this is a try task", id: 512342 },
+  // ]);
 
   const onSortEnd = ({ oldIndex, newIndex }) => {
-    setTasks(arrayMove(tasks, oldIndex, newIndex));
+    //TODO: implement
+    // setTasks(arrayMove(tasks, oldIndex, newIndex));
   };
 
   const changeTaskSummary = (event, id) => {
@@ -75,7 +80,7 @@ function SortableComponent() {
     //   updatedTasks[0].text = event.target.value;
     console.log(event.target);
     console.log(id);
-    setTasks(updatedTasks);
+    // setTasks(updatedTasks);
   };
 
   return (

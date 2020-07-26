@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
@@ -12,7 +12,7 @@ import SortableComponent from "./sortable";
 import AddTaskAccordions from "./AddTaskAccordion";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { selectFile, updateFile } from "./store/fileSlice";
+import { selectFile, updateFile, updateCurrentFile } from "./store/fileSlice";
 import axios from "axios";
 
 const useStyles = makeStyles(() => ({
@@ -60,7 +60,8 @@ function ScatchFile() {
   const dispatch = useDispatch();
 
   let { fileId } = useParams();
-  const currentFile = useSelector((state) => selectFile(state, fileId));
+  let currentFile = useSelector((state) => selectFile(state, fileId));
+  dispatch(updateCurrentFile(fileId));
 
   const [value, setValue] = React.useState(0);
   const [taskValue, setTaskValue] = React.useState("");
