@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
@@ -8,6 +8,14 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectAllFiles,
+  selectFileStatus,
+  addFiles,
+  fetchFiles,
+} from "./store/fileSlice";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   searchBar: {
@@ -32,8 +40,36 @@ const useStyles = makeStyles((theme) => ({
 
 function StartPage() {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const [searchType, setSearchType] = React.useState("Files");
+  let files = useSelector(selectAllFiles);
+  // const files = React.useState({ fileName: "hello", key: "123" });
+
+  const filesStatus = useSelector(selectFileStatus);
+
+  useEffect(() => {
+    axios
+      .get("https://lyjcnc.deta.dev/files/")
+      .then(function (response) {
+        dispatch(addFiles(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    // dispatch(fetchFiles());
+  }, [dispatch]);
+
+  if (!files) {
+    files = [];
+  }
+  console.log("files are" + files)
+  // files = [];
+  const renderedFiles = files.map((file) => (
+    <ListItem key={file.key} component={Link} to={"/" + file.key} button>
+      <ListItemText primary={file.fileName} />
+    </ListItem>
+  ));
 
   const handleChange = (event) => {
     setSearchType(event.target.value);
@@ -70,18 +106,16 @@ function StartPage() {
       </div>
       <div className={classes.filesList}>
         <List component="nav" aria-label="files list">
-            <ListItem 
-            component={Link}
-            to={"/scratchFile"}
-            button>
-              <ListItemText primary="Scratch" />
-            </ListItem>
+          {renderedFiles}
+          {/* <ListItem component={Link} to={"/scratchFile"} button>
+            <ListItemText primary="Scratch" />
+          </ListItem>
           <ListItem button>
             <ListItemText primary="Machine Learning" />
           </ListItem>
           <ListItem button>
             <ListItemText primary="React" />
-          </ListItem>
+          </ListItem> */}
         </List>
       </div>
     </React.Fragment>
