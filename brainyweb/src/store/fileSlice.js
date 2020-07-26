@@ -32,7 +32,7 @@ export const fileSlice = createSlice({
     addFiles: (state, action) => {
       //   state.files.filesList = action.payload;
       // state.filesList = action.payload[0];
-      state.filesList = action.payload[0]
+      state.filesList = action.payload
       // state.value = 5;
       console.log(state);
     },

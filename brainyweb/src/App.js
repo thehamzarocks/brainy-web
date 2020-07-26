@@ -38,7 +38,7 @@ function App() {
     axios
       .get("https://lyjcnc.deta.dev/files/")
       .then(function (response) {
-        dispatch(addFiles(response.data));
+        dispatch(addFiles(response.data[0]));
       })
       .catch(function (error) {
         console.log(error);

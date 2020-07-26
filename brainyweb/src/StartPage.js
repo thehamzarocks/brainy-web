@@ -4,10 +4,13 @@ import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
 import Select from "@material-ui/core/Select";
 import List from "@material-ui/core/List";
+import Button from "@material-ui/core/Button";
 import ListItem from "@material-ui/core/ListItem";
+import TextField from "@material-ui/core/TextField";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Link } from "react-router-dom";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectAllFiles,
@@ -18,6 +21,10 @@ import {
 import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
+  addFileBar: {
+    display: "flex",
+    flexDirection: "row",
+  },
   searchBar: {
     display: "flex",
     flexDirection: "row",
@@ -42,6 +49,8 @@ function StartPage() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const [newFileName, setNewFileName] = React.useState("");
+
   const [searchType, setSearchType] = React.useState("Files");
   let files = useSelector(selectAllFiles);
   // const files = React.useState({ fileName: "hello", key: "123" });
@@ -51,7 +60,7 @@ function StartPage() {
   if (!files) {
     files = [];
   }
-  console.log("files are" + files)
+  console.log("files are" + files);
   // files = [];
   const renderedFiles = files.map((file) => (
     <ListItem key={file.key} component={Link} to={"/files/" + file.key} button>
@@ -61,6 +70,22 @@ function StartPage() {
 
   const handleChange = (event) => {
     setSearchType(event.target.value);
+  };
+
+  const handleAddFile = (event) => {
+    axios
+      .post("https://lyjcnc.deta.dev/files/", {
+        fileName: newFileName,
+        info: "",
+        tags: [],
+        tasks: [],
+        userId: "123",
+      })
+      .then((response) => {
+        const updatedFilesList = [...files, response.data];
+        dispatch(addFiles(updatedFilesList))
+        setNewFileName("");
+      });
   };
 
   return (
@@ -91,6 +116,20 @@ function StartPage() {
           <MenuItem value={"Content"}>Content</MenuItem>
           <MenuItem value={"Any"}>Any</MenuItem>
         </Select>
+      </div>
+      <div className={classes.addFileBar}>
+        <TextField
+          spellCheck="false"
+          fullWidth={true}
+          onClick={(event) => event.stopPropagation()}
+          onFocus={(event) => event.stopPropagation()}
+          placeholder="Add File"
+          value={newFileName}
+          onChange={(event) => setNewFileName(event.target.value)}
+        />
+        <Button onClick={handleAddFile}>
+          <AddCircleIcon />
+        </Button>
       </div>
       <div className={classes.filesList}>
         <List component="nav" aria-label="files list">

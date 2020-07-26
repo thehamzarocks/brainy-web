@@ -81,23 +81,41 @@ function SortableComponent() {
   //   { summary: "try", description: "this is a try task", id: 512342 },
   // ]);
 
+  const updateTaskPriorities = (tasks, oldIndex, newIndex) => {
+    if (oldIndex < newIndex) {
+      return tasks.map((task) => {
+        if (task.priority > oldIndex && task.priority <= newIndex) {
+          return { ...task, priority: task.priority - 1 };
+        }
+        if (task.priority === oldIndex) {
+          return { ...task, priority: newIndex };
+        }
+        return { ...task };
+      });
+    }
+
+    if (oldIndex > newIndex) {
+      return tasks.map((task) => {
+        if (task.priority >= newIndex && task.priority < oldIndex) {
+          return { ...task, priority: task.priority + 1 };
+        }
+        if (task.priority === oldIndex) {
+          return { ...task, priority: newIndex };
+        }
+        return { ...task };
+      });
+    }
+  };
+
   const onSortEnd = ({ oldIndex, newIndex }) => {
     if (oldIndex === newIndex) {
       return;
     }
 
     //TODO: implement behaviour where oldIndex > newIndex
-    const updatedTasks = tasks.map(task => {
-      if (task.priority > oldIndex && task.priority <= newIndex) {
-        return {...task, priority: task.priority-1};
-      }
-      if (task.priority === oldIndex) {
-        return {...task, priority: newIndex};
-      }
-      return {...task}
-    })
+    const updatedTasks = updateTaskPriorities(tasks, oldIndex, newIndex);
 
-    const updatedFile = {... currentFile, tasks: updatedTasks};
+    const updatedFile = { ...currentFile, tasks: updatedTasks };
     dispatch(updateFile(updatedFile));
     // task has reduced priority
 

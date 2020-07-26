@@ -105,7 +105,7 @@ function ScatchFile() {
     <React.Fragment>
       <div className={classes.fileHeader}>
         <div className={classes.fileName}>
-          <Typography variant="h5">Scratch File</Typography>
+          <Typography variant="h5">{currentFile.fileName}</Typography>
         </div>
         <div className={classes.tags}>
           <Typography variant="h6">Tags: scratchfile</Typography>

@@ -51,6 +51,7 @@ export default function AddTaskAccordion() {
 
     const updatedFile = {...currentFile, tasks: updatedTasks}
     dispatch(updateFile(updatedFile));
+    setNewTaskSummary("");
   };
 
   //   return (<React.Fragment/>)
