@@ -14,9 +14,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectAllFiles,
-  selectFileStatus,
   addFiles,
-  fetchFiles,
 } from "./store/fileSlice";
 import axios from "axios";
 
@@ -53,9 +51,6 @@ function StartPage() {
 
   const [searchType, setSearchType] = React.useState("Files");
   let files = useSelector(selectAllFiles);
-  // const files = React.useState({ fileName: "hello", key: "123" });
-
-  // const filesStatus = useSelector(selectFileStatus);
 
   if (!files) {
     files = [];

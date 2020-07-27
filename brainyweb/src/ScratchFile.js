@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectFile, updateFile, updateCurrentFile } from "./store/fileSlice";
 import axios from "axios";
 import { current } from "@reduxjs/toolkit";
+import Tag from "./Tag";
 
 const useStyles = makeStyles(() => ({
   fileHeader: {
@@ -92,10 +93,7 @@ function ScatchFile() {
 
   const handleSave = (event) => {
     axios
-      .put(
-        "https://lyjcnc.deta.dev/files/" + currentFile.key,
-        currentFile
-      )
+      .put("https://lyjcnc.deta.dev/files/" + currentFile.key, currentFile)
       .then((response) => {
         console.log("Save succesful!");
       });
@@ -105,10 +103,7 @@ function ScatchFile() {
     <React.Fragment>
       <div className={classes.fileHeader}>
         <div className={classes.fileName}>
-          <Typography variant="h5">{currentFile.fileName}</Typography>
-        </div>
-        <div className={classes.tags}>
-          <Typography variant="h6">Tags: scratchfile</Typography>
+          <Typography variant="h6">{currentFile.fileName}</Typography>
         </div>
         <div>
           <Button color="default">Actions</Button>
@@ -118,6 +113,9 @@ function ScatchFile() {
             Save
           </Button>
         </div>
+      </div>
+      <div className={classes.tags}>
+        <Tag />
       </div>
       <form className={classes.root} noValidate autoComplete="off">
         <div>

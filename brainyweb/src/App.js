@@ -12,11 +12,9 @@ import ScratchFile from "./ScratchFile";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import {
-  selectAllFiles,
-  selectFileStatus,
-  addFiles,
-  fetchFiles,
+  addFiles
 } from "./store/fileSlice";
+import About from "./Tag";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -52,13 +50,7 @@ function App() {
         <Layout>
           <Switch>
             <Route path="/about">
-              <Typography
-                variant="h5"
-                className={classes.sectionPlaceHolder}
-                gutterBottom
-              >
-                About Section
-              </Typography>
+              <About/>
             </Route>
             <Route path="/start">
               <StartPage />

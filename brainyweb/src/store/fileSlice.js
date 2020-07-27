@@ -104,6 +104,17 @@ export const selectCurrentFile = (state) => {
   });
 }
 
-export const selectFileStatus = (state) => state.status;
+export const selectTagOptions = (state) => {
+  const tags = new Set();
+  state.appReducer.filesList.forEach(file => {
+    if (!file.tags) {
+      return;
+    }
+    file.tags.forEach(tag => {
+      tags.add(tag);
+    })
+  });
+  return [...tags.keys()];
+}
 
 export default fileSlice.reducer;
