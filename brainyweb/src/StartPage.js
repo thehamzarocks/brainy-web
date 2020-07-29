@@ -137,8 +137,10 @@ function StartPage() {
           to={"/files/" + match.fileKey}
           button
         >
+          <div>
           <ListItemText primary={match.fileName} />
           <ListItemText primary={match.matchString} />
+          </div>
         </ListItem>
       );
     });
