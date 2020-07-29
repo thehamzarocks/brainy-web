@@ -122,7 +122,7 @@ export default function TaskAccordion(props) {
             spellCheck="false"
             fullWidth={true}
             rows="3"
-            id="standard-multiline-flexible"
+            id="taskSummaryText"
             multiline
             onClick={(event) => event.stopPropagation()}
             onFocus={(event) => event.stopPropagation()}
@@ -140,7 +140,7 @@ export default function TaskAccordion(props) {
             spellCheck="false"
             fullWidth={true}
             rows="5"
-            id="standard-multiline-flexible"
+            id="taskLogText"
             multiline
             value={currentTask.taskLog}
             onChange={handleTaskLogChange}

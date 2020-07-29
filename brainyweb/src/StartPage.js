@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   addFileBar: {
     display: "flex",
     flexDirection: "row",
+    marginTop: theme.spacing(2),
   },
   searchBar: {
     display: "flex",
@@ -194,6 +195,19 @@ function StartPage() {
   return (
     <React.Fragment>
       <div className={classes.searchBar}>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={searchType}
+          onChange={handleChange}
+          className={classes.category}
+        >
+          <MenuItem value={"Files"}>Files</MenuItem>
+          <MenuItem value={"Tags"}>Tags</MenuItem>
+          <MenuItem value={"Tasks"}>Tasks</MenuItem>
+          <MenuItem value={"Content"}>Content</MenuItem>
+          <MenuItem value={"Any"}>Any</MenuItem>
+        </Select>
         <TextField
           value={searchText}
           onChange={handleSearchTextChange}
@@ -208,19 +222,6 @@ function StartPage() {
         <div className={classes.searchIcon}>
           <SearchIcon />
         </div>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={searchType}
-          onChange={handleChange}
-          className={classes.category}
-        >
-          <MenuItem value={"Files"}>Files</MenuItem>
-          <MenuItem value={"Tags"}>Tags</MenuItem>
-          <MenuItem value={"Tasks"}>Tasks</MenuItem>
-          <MenuItem value={"Content"}>Content</MenuItem>
-          <MenuItem value={"Any"}>Any</MenuItem>
-        </Select>
       </div>
       <div className={classes.addFileBar}>
         <TextField

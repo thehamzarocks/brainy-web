@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
@@ -18,6 +18,12 @@ import { current } from "@reduxjs/toolkit";
 import Tag from "./Tag";
 
 const useStyles = makeStyles(() => ({
+  tabPanel: {
+    display: "flex",
+  },
+  tab: {
+    alignSelf: "flex-end"
+  },
   fileHeader: {
     display: "flex",
     flexDirection: "row",
@@ -62,8 +68,13 @@ function ScatchFile() {
   const dispatch = useDispatch();
 
   let { fileId } = useParams();
-  let currentFile = useSelector((state) => selectFile(state, fileId));
-  dispatch(updateCurrentFile(fileId));
+  let currentFile = {};
+
+  currentFile = useSelector((state) => selectFile(state, fileId));
+
+  useEffect(() => {
+    dispatch(updateCurrentFile(fileId));
+  }, [dispatch, fileId]);
 
   const [value, setValue] = React.useState(0);
   const [taskValue, setTaskValue] = React.useState("");
@@ -119,12 +130,12 @@ function ScatchFile() {
       </div>
       <form className={classes.root} noValidate autoComplete="off">
         <div>
-          <AppBar position="static">
-            <Tabs value={value} onChange={handleChange} aria-label="file tabs">
-              <Tab label="Tasks" {...a11yProps(0)} />
-              <Tab label="Information" {...a11yProps(1)} />
-            </Tabs>
-          </AppBar>
+          <Tabs variant="fullWidth" className={classes.tabPanel} value={value} onChange={handleChange} aria-label="file tabs">
+            <Tab className={classes.tab} label="Tasks" {...a11yProps(0)} />
+
+            <Tab className={classes.tab} label="Information" {...a11yProps(1)} />
+          </Tabs>
+
           <TabPanel value={value} index={0}>
             <AddTaskAccordion />
             <SortableComponent />
@@ -134,7 +145,7 @@ function ScatchFile() {
               spellCheck="false"
               fullWidth={true}
               rows="30"
-              id="standard-multiline-flexible"
+              id="infoText"
               multiline
               value={currentFile.info}
               onChange={handleInfoChange}

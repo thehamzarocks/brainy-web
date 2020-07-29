@@ -30,6 +30,7 @@ export const fileSlice = createSlice({
   },
   reducers: {
     addFiles: (state, action) => {
+      console.log("adding files")
       //   state.files.filesList = action.payload;
       // state.filesList = action.payload[0];
       state.filesList = action.payload
@@ -37,6 +38,7 @@ export const fileSlice = createSlice({
       console.log(state);
     },
     updateFile: (state, action) => {
+      console.log("updating files")
       state.filesList =  state.filesList.map(item => {
         if (item.key !== state.currentFileId) {
           // This isn't the item we care about - keep it as-is
@@ -51,6 +53,7 @@ export const fileSlice = createSlice({
       })
     },
     updateCurrentFile: (state, action) => {
+      console.log("updating current files")
       state.currentFileId = action.payload;
     }
   },
@@ -93,15 +96,17 @@ export const selectAllFiles = (state) => {
 };
 
 export const selectFile = (state, fileId) => {
-  return state.appReducer.filesList.find(file => {
+  const selectedFile = state.appReducer.filesList.find(file => {
     return file.key === fileId
   });
+  return selectedFile || {};
 }
 
 export const selectCurrentFile = (state) => {
-  return state.appReducer.filesList.find(file => {
+  const currentFile =  state.appReducer.filesList.find(file => {
     return file.key === state.appReducer.currentFileId;
   });
+  return currentFile || {};
 }
 
 export const selectTagOptions = (state) => {

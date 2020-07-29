@@ -9,7 +9,6 @@ import { selectTagOptions, selectCurrentFile, updateFile } from "./store/fileSli
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: 500,
     "& > * + *": {
       marginTop: theme.spacing(3),
     },

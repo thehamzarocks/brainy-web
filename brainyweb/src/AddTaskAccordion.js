@@ -61,7 +61,7 @@ export default function AddTaskAccordion() {
         spellCheck="false"
         fullWidth={true}
         rows="3"
-        id="standard-multiline-flexible"
+        id="addTaskText"
         multiline
         onClick={(event) => event.stopPropagation()}
         onFocus={(event) => event.stopPropagation()}

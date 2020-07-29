@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import "./App.css";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HomePageContent from "./HomePageContent";
@@ -15,6 +15,17 @@ import {
   addFiles
 } from "./store/fileSlice";
 import About from "./Tag";
+import { createMuiTheme } from '@material-ui/core/styles';
+import green from '@material-ui/core/colors/green';
+
+const mainTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#0b4644',
+      secondary: '#146d65'
+    }
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,6 +56,7 @@ function App() {
   }, [dispatch]);
 
   return (
+    <ThemeProvider theme={mainTheme}>
     <Container maxWidth="sm" className={classes.root}>
       <Router>
         <Layout>
@@ -68,6 +80,7 @@ function App() {
         </Layout>
       </Router>
     </Container>
+    </ThemeProvider>
   );
 }
 

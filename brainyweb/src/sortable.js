@@ -14,19 +14,13 @@ import TaskAccordion from "./TaskAccordion";
 import { useSelector, useDispatch } from "react-redux";
 import { selectCurrentFile, updateFile } from "./store/fileSlice";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    justifyContent: "center",
-  },
-  sectionPlaceHolder: {
-    padding: theme.spacing(5),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-  },
+const useStyles = makeStyles(() => ({
+  taskList: {
+    paddingLeft: 0
+  }
 }));
 
 const SortableItem = SortableElement(({ value, changeTaskSummary }) => {
-  const classes = useStyles();
   return (
     <>
       <TaskAccordion taskId={value.taskId} />
@@ -47,11 +41,12 @@ const compareTaskPriorities = (task1, task2) => {
 };
 
 const SortableList = SortableContainer(({ items, changeTaskSummary }) => {
+  const classes = useStyles();
   const tasks = [...items];
   tasks.sort(compareTaskPriorities);
   // const sortedTasks = [... items.sort(compareTaskPriorities)];
   return (
-    <ul>
+    <ul className={classes.taskList}>
       {tasks.map((value, index) => (
         <SortableItem
           changeTaskSummary={(event) => changeTaskSummary(event, value.id)}
@@ -65,13 +60,11 @@ const SortableList = SortableContainer(({ items, changeTaskSummary }) => {
 });
 
 function SortableComponent() {
-  const classes = useStyles();
-
   const dispatch = useDispatch();
 
   const currentFile = useSelector(selectCurrentFile);
 
-  const tasks = currentFile.tasks;
+  const tasks = currentFile.tasks || [];
   // const [tasks, setTasks] = React.useState([
   //   { summary: "hello", description: "this is a hello task", id: 123 },
   //   { summary: "there", description: "this is a there task", id: 512 },
@@ -144,7 +137,6 @@ function SortableComponent() {
         items={tasks}
         onSortEnd={onSortEnd}
       />
-      ;
     </>
   );
 
