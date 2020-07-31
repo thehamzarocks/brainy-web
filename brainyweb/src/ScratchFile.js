@@ -10,9 +10,9 @@ import Box from "@material-ui/core/Box";
 import PropTypes from "prop-types";
 import SortableComponent from "./sortable";
 import AddTaskAccordion from "./AddTaskAccordion";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { selectFile, updateFile, updateCurrentFile } from "./store/fileSlice";
+import { selectFile, updateFile, updateCurrentFile, deleteFile } from "./store/fileSlice";
 import axios from "axios";
 import { current } from "@reduxjs/toolkit";
 import Tag from "./Tag";
@@ -66,6 +66,7 @@ function ScatchFile() {
   const classes = useStyles();
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   let { fileId } = useParams();
   let currentFile = {};
@@ -110,6 +111,17 @@ function ScatchFile() {
       });
   };
 
+  const handleDelete = (event) => {
+    axios
+      .delete("https://lyjcnc.deta.dev/files/" + currentFile.key)
+      .then((response) => {
+        console.log("Delete succesful!");
+        dispatch(deleteFile(currentFile));
+        history.push("/start");
+      });
+
+  };
+
   return (
     <React.Fragment>
       <div className={classes.fileHeader}>
@@ -117,7 +129,7 @@ function ScatchFile() {
           <Typography variant="h6">{currentFile.fileName}</Typography>
         </div>
         <div>
-          <Button color="default">Actions</Button>
+          <Button onClick={handleDelete} color="default">Delete</Button>
         </div>
         <div>
           <Button onClick={handleSave} color="primary">

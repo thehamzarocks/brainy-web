@@ -11,19 +11,16 @@ import StartPage from "./StartPage";
 import ScratchFile from "./ScratchFile";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import {
-  addFiles
-} from "./store/fileSlice";
+import { addFiles } from "./store/fileSlice";
 import About from "./Tag";
-import { createMuiTheme } from '@material-ui/core/styles';
-import green from '@material-ui/core/colors/green';
+import { createMuiTheme } from "@material-ui/core/styles";
 
 const mainTheme = createMuiTheme({
   palette: {
     primary: {
-      main: '#0b4644',
-      secondary: '#146d65'
-    }
+      main: "#0b4644",
+      secondary: "#146d65",
+    },
   },
 });
 
@@ -40,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -52,34 +48,30 @@ function App() {
       .catch(function (error) {
         console.log(error);
       });
-    // dispatch(fetchFiles());
   }, [dispatch]);
 
   return (
     <ThemeProvider theme={mainTheme}>
-    <Container maxWidth="sm" className={classes.root}>
-      <Router>
-        <Layout>
-          <Switch>
-            <Route path="/about">
-              <About/>
-            </Route>
-            <Route path="/start">
-              <StartPage />
-            </Route>
-            <Route path="/files/:fileId">
-              <ScratchFile />
-            </Route>
-            <Route path="/scratchFile">
-              <ScratchFile />
-            </Route>
-            <Route path="/">
-              <HomePageContent />
-            </Route>
-          </Switch>
-        </Layout>
-      </Router>
-    </Container>
+      <Container maxWidth="sm" className={classes.root}>
+        <Router>
+          <Layout>
+            <Switch>
+              <Route path="/about">
+                <About />
+              </Route>
+              <Route path="/start">
+                <StartPage />
+              </Route>
+              <Route path="/files/:fileId">
+                <ScratchFile />
+              </Route>
+              <Route path="/">
+                <HomePageContent />
+              </Route>
+            </Switch>
+          </Layout>
+        </Router>
+      </Container>
     </ThemeProvider>
   );
 }

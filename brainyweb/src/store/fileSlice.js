@@ -25,37 +25,43 @@ export const fileSlice = createSlice({
   initialState: {
     // value: 0,
     filesList: [],
-    currentFileId: ""
+    currentFileId: "",
     // filesList: [],
   },
   reducers: {
     addFiles: (state, action) => {
-      console.log("adding files")
+      console.log("adding files");
       //   state.files.filesList = action.payload;
       // state.filesList = action.payload[0];
-      state.filesList = action.payload
+      state.filesList = action.payload;
       // state.value = 5;
       console.log(state);
     },
     updateFile: (state, action) => {
-      console.log("updating files")
-      state.filesList =  state.filesList.map(item => {
+      console.log("updating files");
+      state.filesList = state.filesList.map((item) => {
         if (item.key !== state.currentFileId) {
           // This isn't the item we care about - keep it as-is
-          return item
+          return item;
         }
-    
+
         // Otherwise, this is the one we want - return an updated value
         return {
           ...item,
-          ...action.payload
-        }
-      })
+          ...action.payload,
+        };
+      });
     },
     updateCurrentFile: (state, action) => {
-      console.log("updating current files")
+      console.log("updating current files");
       state.currentFileId = action.payload;
-    }
+    },
+    deleteFile: (state, action) => {
+      console.log("Deleting file");
+      state.filesList = state.filesList.filter((item) => {
+        return item.key !== action.payload.key
+      });
+    },
   },
   //   extraReducers: {
   //     [fetchFiles.pending]: (state, action) => {
@@ -74,7 +80,7 @@ export const fileSlice = createSlice({
   //   },
 });
 
-export const { addFiles, updateFile, updateCurrentFile } = fileSlice.actions;
+export const { addFiles, updateFile, updateCurrentFile, deleteFile } = fileSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -91,35 +97,35 @@ export const { addFiles, updateFile, updateCurrentFile } = fileSlice.actions;
 // in the slice file. For example: `useSelector((state) => state.counter.value)`
 // export const selectCount = state => state.counter.value;
 export const selectAllFiles = (state) => {
-  console.log("selecting value")
+  console.log("selecting value");
   return state.appReducer.filesList;
 };
 
 export const selectFile = (state, fileId) => {
-  const selectedFile = state.appReducer.filesList.find(file => {
-    return file.key === fileId
+  const selectedFile = state.appReducer.filesList.find((file) => {
+    return file.key === fileId;
   });
   return selectedFile || {};
-}
+};
 
 export const selectCurrentFile = (state) => {
-  const currentFile =  state.appReducer.filesList.find(file => {
+  const currentFile = state.appReducer.filesList.find((file) => {
     return file.key === state.appReducer.currentFileId;
   });
   return currentFile || {};
-}
+};
 
 export const selectTagOptions = (state) => {
   const tags = new Set();
-  state.appReducer.filesList.forEach(file => {
+  state.appReducer.filesList.forEach((file) => {
     if (!file.tags) {
       return;
     }
-    file.tags.forEach(tag => {
+    file.tags.forEach((tag) => {
       tags.add(tag);
-    })
+    });
   });
   return [...tags.keys()];
-}
+};
 
 export default fileSlice.reducer;

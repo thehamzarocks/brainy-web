@@ -61,10 +61,10 @@ function StartPage() {
   };
 
   const tagSearchFilter = (file) => {
-    const matchingTags = file.tags.filter((tag) => {
+    const matchingTags = file.tags?.filter((tag) => {
       return tag.toLowerCase().includes(searchText.toLowerCase());
     });
-    return matchingTags.length > 0;
+    return matchingTags?.length > 0;
   };
 
   const contentSearchFilter = (file) => {
