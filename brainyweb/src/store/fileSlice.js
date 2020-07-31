@@ -1,16 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
-const initialState = {
-  filesList: [],
-  status: "idle",
-  error: null,
-};
-
-// export const fetchFiles = createAsyncThunk("files/fetchAllFiles", async () => {
-//   const response = await axios.get("https://lyjcnc.deta.dev/files/");
-//   return response.data;
-// });
+import { createSlice } from "@reduxjs/toolkit";
 
 export const fileSlice = createSlice({
   name: "files",
@@ -23,16 +11,12 @@ export const fileSlice = createSlice({
   //     error: null,
   //   },
   initialState: {
-    // value: 0,
     filesList: [],
     currentFileId: "",
-    // filesList: [],
   },
   reducers: {
     addFiles: (state, action) => {
       console.log("adding files");
-      //   state.files.filesList = action.payload;
-      // state.filesList = action.payload[0];
       state.filesList = action.payload;
       // state.value = 5;
       console.log(state);
@@ -41,11 +25,9 @@ export const fileSlice = createSlice({
       console.log("updating files");
       state.filesList = state.filesList.map((item) => {
         if (item.key !== state.currentFileId) {
-          // This isn't the item we care about - keep it as-is
           return item;
         }
-
-        // Otherwise, this is the one we want - return an updated value
+        
         return {
           ...item,
           ...action.payload,

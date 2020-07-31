@@ -1,10 +1,5 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
-import MuiAccordion from "@material-ui/core/Accordion";
-import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
-import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
@@ -28,9 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AddTaskAccordion() {
   const classes = useStyles();
-
   const dispatch = useDispatch();
-
   const currentFile = useSelector(selectCurrentFile);
   
   const [newTaskSummary, setNewTaskSummary] = React.useState("");
@@ -39,8 +32,7 @@ export default function AddTaskAccordion() {
     setNewTaskSummary(event.target.value);
   };
 
-  const handleAddTask = (event) => {
-    console.log("adding task");
+  const handleAddTask = () => {
     const updatedTasks = [...currentFile.tasks];
     updatedTasks.push({
       taskId: currentFile.key + currentFile.tasks.length,

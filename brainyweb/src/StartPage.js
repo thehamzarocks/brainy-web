@@ -1,15 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchIcon from "@material-ui/icons/Search";
-import InputBase from "@material-ui/core/InputBase";
 import Select from "@material-ui/core/Select";
 import List from "@material-ui/core/List";
 import Button from "@material-ui/core/Button";
-import ListItem from "@material-ui/core/ListItem";
 import TextField from "@material-ui/core/TextField";
-import ListItemText from "@material-ui/core/ListItemText";
 import MenuItem from "@material-ui/core/MenuItem";
-import { Link } from "react-router-dom";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { useSelector, useDispatch } from "react-redux";
 import { selectAllFiles, addFiles } from "./store/fileSlice";
@@ -117,8 +113,6 @@ function StartPage() {
         <TextField
           spellCheck="false"
           fullWidth={true}
-          onClick={(event) => event.stopPropagation()}
-          onFocus={(event) => event.stopPropagation()}
           placeholder="Add File"
           value={newFileName}
           onChange={(event) => setNewFileName(event.target.value)}

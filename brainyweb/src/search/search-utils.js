@@ -42,7 +42,7 @@ const fileSearchFilter = (file, searchText) => {
 
   const getIndicesOf = (searchStr, str, caseSensitive) => {
     var searchStrLen = searchStr.length;
-    if (searchStrLen == 0) {
+    if (searchStrLen === 0) {
       return [];
     }
     var startIndex = 0,

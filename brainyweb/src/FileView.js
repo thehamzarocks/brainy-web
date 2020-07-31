@@ -3,26 +3,28 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
-import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Box from "@material-ui/core/Box";
-import PropTypes from "prop-types";
 import SortableComponent from "./sortable";
 import AddTaskAccordion from "./AddTaskAccordion";
 import { useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { selectFile, updateFile, updateCurrentFile, deleteFile } from "./store/fileSlice";
+import {
+  selectFile,
+  updateFile,
+  updateCurrentFile,
+  deleteFile,
+} from "./store/fileSlice";
 import axios from "axios";
-import { current } from "@reduxjs/toolkit";
 import Tag from "./Tag";
+import TabPanel, { tabProp } from "./TabPanel";
 
 const useStyles = makeStyles(() => ({
   tabPanel: {
     display: "flex",
   },
   tab: {
-    alignSelf: "flex-end"
+    alignSelf: "flex-end",
   },
   fileHeader: {
     display: "flex",
@@ -36,67 +38,26 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
-
 function ScatchFile() {
   const classes = useStyles();
-
   const dispatch = useDispatch();
   const history = useHistory();
 
   let { fileId } = useParams();
-  let currentFile = {};
 
-  currentFile = useSelector((state) => selectFile(state, fileId));
+  const currentFile = useSelector((state) => selectFile(state, fileId)) ?? {};
 
   useEffect(() => {
     dispatch(updateCurrentFile(fileId));
   }, [dispatch, fileId]);
 
-  const [value, setValue] = React.useState(0);
-  const [taskValue, setTaskValue] = React.useState("");
-  const [infoValue, setInfoValue] = React.useState("");
+  const [tabIndex, setTabIndex] = React.useState(0);
 
-  function a11yProps(index) {
-    return {
-      id: `simple-tab-${index}`,
-      "aria-controls": `simple-tabpanel-${index}`,
-    };
-  }
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
+  const handleTabChange = (event, newValue) => {
+    setTabIndex(newValue);
   };
 
-  const handleTaskChange = (event, newValue) => {
-    setTaskValue(event.target.value);
-  };
-
-  const handleInfoChange = (event, newValue) => {
+  const handleInfoChange = (event) => {
     // setInfoValue(event.target.value);
     const updatedCurrentFile = { ...currentFile };
     updatedCurrentFile.info = event.target.value;
@@ -119,7 +80,6 @@ function ScatchFile() {
         dispatch(deleteFile(currentFile));
         history.push("/start");
       });
-
   };
 
   return (
@@ -129,7 +89,9 @@ function ScatchFile() {
           <Typography variant="h6">{currentFile.fileName}</Typography>
         </div>
         <div>
-          <Button onClick={handleDelete} color="default">Delete</Button>
+          <Button onClick={handleDelete} color="default">
+            Delete
+          </Button>
         </div>
         <div>
           <Button onClick={handleSave} color="primary">
@@ -142,17 +104,23 @@ function ScatchFile() {
       </div>
       <form className={classes.root} noValidate autoComplete="off">
         <div>
-          <Tabs variant="fullWidth" className={classes.tabPanel} value={value} onChange={handleChange} aria-label="file tabs">
-            <Tab className={classes.tab} label="Tasks" {...a11yProps(0)} />
+          <Tabs
+            variant="fullWidth"
+            className={classes.tabPanel}
+            value={tabIndex}
+            onChange={handleTabChange}
+            aria-label="file tabs"
+          >
+            <Tab className={classes.tab} label="Tasks" {...tabProp(0)} />
 
-            <Tab className={classes.tab} label="Information" {...a11yProps(1)} />
+            <Tab className={classes.tab} label="Information" {...tabProp(1)} />
           </Tabs>
 
-          <TabPanel value={value} index={0}>
+          <TabPanel value={tabIndex} index={0}>
             <AddTaskAccordion />
             <SortableComponent />
           </TabPanel>
-          <TabPanel value={value} index={1}>
+          <TabPanel value={tabIndex} index={1}>
             <TextField
               spellCheck="false"
               fullWidth={true}

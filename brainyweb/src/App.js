@@ -1,14 +1,12 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles, ThemeProvider } from "@material-ui/core/styles";
-
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HomePageContent from "./HomePageContent";
 import Layout from "./Layout";
 import StartPage from "./StartPage";
-import ScratchFile from "./ScratchFile";
+import FileView from "./FileView";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addFiles } from "./store/fileSlice";
@@ -63,7 +61,7 @@ function App() {
                 <StartPage />
               </Route>
               <Route path="/files/:fileId">
-                <ScratchFile />
+                <FileView />
               </Route>
               <Route path="/">
                 <HomePageContent />

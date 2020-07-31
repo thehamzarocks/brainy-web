@@ -6,11 +6,11 @@ import * as serviceWorker from "./serviceWorker";
 import Amplify from "aws-amplify";
 import awsExports from "./aws-exports";
 import { Provider } from "react-redux";
-import { createStore, combineReducers, applyMiddleware } from "redux";
+// import { createStore, combineReducers, applyMiddleware } from "redux";
 // import rootReducer from './reducers'
 // import { fileSlice } from "./fileSlice";
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import thunkMiddleware from "redux-thunk";
+// import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+// import thunkMiddleware from "redux-thunk";
 // import filesReducer from "./fileSlice";
 import { store } from './store/index.js';
 Amplify.configure(awsExports);
