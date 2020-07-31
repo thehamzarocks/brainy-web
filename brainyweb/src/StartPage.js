@@ -14,6 +14,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { useSelector, useDispatch } from "react-redux";
 import { selectAllFiles, addFiles } from "./store/fileSlice";
 import axios from "axios";
+import { getRenderedResults } from "./search/search-utils";
 
 const useStyles = makeStyles((theme) => ({
   addFileBar: {
@@ -46,7 +47,6 @@ function StartPage() {
   const dispatch = useDispatch();
 
   const [newFileName, setNewFileName] = React.useState("");
-
   const [searchType, setSearchType] = React.useState("Files");
   const [searchText, setSearchText] = React.useState("");
 
@@ -56,129 +56,17 @@ function StartPage() {
     files = [];
   }
 
-  const fileSearchFilter = (file) => {
-    return file.fileName.toLowerCase().includes(searchText.toLowerCase());
-  };
+  const renderedResults = getRenderedResults(files, searchType, searchText);
 
-  const tagSearchFilter = (file) => {
-    const matchingTags = file.tags?.filter((tag) => {
-      return tag.toLowerCase().includes(searchText.toLowerCase());
-    });
-    return matchingTags?.length > 0;
-  };
-
-  const contentSearchFilter = (file) => {
-    return file.info.toLowerCase().includes(searchText.toLowerCase());
-  };
-
-  const searchTypeToFilterMap = {
-    Files: fileSearchFilter,
-    Tags: tagSearchFilter,
-    Content: contentSearchFilter,
-  };
-
-  const renderFilesBasedOnSearch = () => {
-    const filteredFiles = files.filter(searchTypeToFilterMap[searchType]);
-    return filteredFiles.map((file) => {
-      return (
-        <ListItem
-          key={file.key}
-          component={Link}
-          to={"/files/" + file.key}
-          button
-        >
-          <ListItemText primary={file.fileName} />
-        </ListItem>
-      );
-    });
-  };
-
-  const getIndicesOf = (searchStr, str, caseSensitive) => {
-    var searchStrLen = searchStr.length;
-    if (searchStrLen == 0) {
-      return [];
-    }
-    var startIndex = 0,
-      index,
-      indices = [];
-    if (!caseSensitive) {
-      str = str.toLowerCase();
-      searchStr = searchStr.toLowerCase();
-    }
-    while ((index = str.indexOf(searchStr, startIndex)) > -1) {
-      indices.push(index);
-      startIndex = index + searchStrLen;
-    }
-    return indices;
-  };
-
-  const renderMatchesBasedOnSearch = () => {
-    const matches = [];
-    files.forEach((file) => {
-      const matchesInFile = [];
-      const matchingIndices = getIndicesOf(searchText, file.info);
-      matchingIndices.forEach((matchingIndex) => {
-        const startIndex = Math.max(matchingIndex - 50, 0);
-        matchesInFile.push(file.info.substr(startIndex, 100));
-      });
-      matchesInFile.forEach((match) => {
-        matches.push({
-          fileKey: file.key,
-          fileName: file.fileName,
-          matchString: match,
-        });
-      });
-    });
-    return matches.map((match, index) => {
-      return (
-        <ListItem
-          key={match.fileKey + index}
-          component={Link}
-          to={"/files/" + match.fileKey}
-          button
-        >
-          <div>
-          <ListItemText primary={match.fileName} />
-          <ListItemText primary={match.matchString} />
-          </div>
-        </ListItem>
-      );
-    });
-  };
-
-  const getRenderedResults = () => {
-    if (searchType === "Files" || searchType === "Tags") {
-      return renderFilesBasedOnSearch();
-    }
-    if (searchType === "Content") {
-      return renderMatchesBasedOnSearch();
-    }
-  };
-
-  const renderedResults = getRenderedResults();
-  renderedResults.map((file) => {
-    return (
-      <ListItem
-        key={file.key}
-        component={Link}
-        to={"/files/" + file.key}
-        button
-      >
-        <ListItemText primary={file.fileName} />
-      </ListItem>
-    );
-  });
-
-  const handleChange = (event) => {
+  const handleSearchTypeChange = (event) => {
     setSearchType(event.target.value);
   };
 
   const handleSearchTextChange = (event) => {
-    console.log("handling search text change ", event.target.value);
     setSearchText(event.target.value);
   };
 
-  const handleAddFile = (event) => {
+  const handleAddFile = () => {
     axios
       .post("https://lyjcnc.deta.dev/files/", {
         fileName: newFileName,
@@ -198,10 +86,10 @@ function StartPage() {
     <React.Fragment>
       <div className={classes.searchBar}>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
+          labelId="searchTypeSelect"
+          id="searchTypeSelect"
           value={searchType}
-          onChange={handleChange}
+          onChange={handleSearchTypeChange}
           className={classes.category}
         >
           <MenuItem value={"Files"}>Files</MenuItem>
@@ -242,15 +130,6 @@ function StartPage() {
       <div className={classes.filesList}>
         <List component="nav" aria-label="files list">
           {renderedResults}
-          {/* <ListItem component={Link} to={"/scratchFile"} button>
-            <ListItemText primary="Scratch" />
-          </ListItem>
-          <ListItem button>
-            <ListItemText primary="Machine Learning" />
-          </ListItem>
-          <ListItem button>
-            <ListItemText primary="React" />
-          </ListItem> */}
         </List>
       </div>
     </React.Fragment>
