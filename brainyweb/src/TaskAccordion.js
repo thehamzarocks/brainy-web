@@ -10,9 +10,11 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import ArrowDropDownCircleIcon from "@material-ui/icons/ArrowDropDownCircle";
 import DeleteIcon from "@material-ui/icons/Delete";
 import CancelIcon from "@material-ui/icons/Cancel";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { selectCurrentFile, updateFile } from "./store/fileSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Popover from "@material-ui/core/Popover";
+import { makeStyles } from "@material-ui/core/styles";
 
 const Accordion = withStyles({
   root: {
@@ -55,7 +57,14 @@ const AccordionDetails = withStyles((theme) => ({
   },
 }))(MuiAccordionDetails);
 
+const useStyles = makeStyles(() => ({
+  completedTaskColour: {
+    color: "green",
+  },
+}));
+
 export default function TaskAccordion(props) {
+  const classes = useStyles();
   const [expanded, setExpanded] = React.useState("");
 
   const dispatch = useDispatch();
@@ -140,6 +149,34 @@ export default function TaskAccordion(props) {
     handlePopupClose(event);
   };
 
+  const taskStatusIcon = () => {
+    if (currentTask.taskStatus !== "Completed") {
+      return <CheckCircleIcon />;
+    }
+    return <CheckCircleIcon className={classes.completedTaskColour} />;
+  };
+
+  const handleTaskStatusChange = (event) => {
+    event.stopPropagation();
+    const updatedTask = { ...currentTask };
+    updatedTask.taskStatus =
+      updatedTask.taskStatus !== "Completed" ? "Completed" : "Todo";
+    const updatedTasksList = currentFile.tasks.map((task) => {
+      if (task.taskId !== currentTask.taskId) {
+        // This isn't the item we care about - keep it as-is
+        return task;
+      }
+
+      // Otherwise, this is the one we want - return an updated value
+      return {
+        ...task,
+        ...updatedTask,
+      };
+    });
+    const updatedFile = { ...currentFile, tasks: updatedTasksList };
+    dispatch(updateFile(updatedFile));
+  };
+
   return (
     <div>
       <Accordion
@@ -159,7 +196,9 @@ export default function TaskAccordion(props) {
             value={currentTask.taskSummary}
             onChange={handleTaskSummaryChange}
           />
-          <Typography variant="h6">
+
+          <Typography>
+            <Button onClick={handleTaskStatusChange}>{taskStatusIcon()}</Button>
             <Button onClick={handlePopupClick}>
               <DeleteIcon />
             </Button>
