@@ -13,6 +13,15 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
+  greenTaskStatus: {
+    color: "green",
+  },
+  orangeTaskStatus: {
+    color: "orange",
+  },
+  redTaskStatus: {
+    color: "red",
+  },
   container: {
     display: "flex",
     flexWrap: "wrap",
@@ -63,9 +72,30 @@ const TaskScheduleButton = ({ currentFile, currentTask }) => {
     dispatch(updateFile(updatedFile));
   };
 
+  const scheduleButtonClass = () => {
+    if (!currentTask.taskDueDate) {
+      return;
+    }
+    let taskScheduleClass = null;
+    if (currentTask.taskStatus === "Completed") {
+      return classes.greenTaskStatus;
+    }
+
+    const dueDateDate = new Date(currentTask.taskDueDate);
+    if (dueDateDate < new Date()) {
+      return classes.redTaskStatus;
+    }
+    const nextDayDate = new Date();
+    nextDayDate.setDate(nextDayDate.getDate() + 1);
+    if (dueDateDate < nextDayDate) {
+      return classes.orangeTaskStatus;
+    }
+    return classes.greenTaskStatus;
+  };
+
   return (
     <>
-      <Button onClick={handlePopupClick}>
+      <Button className={scheduleButtonClass()} onClick={handlePopupClick}>
         <WatchLaterIcon />
       </Button>
       <Popover
@@ -86,6 +116,7 @@ const TaskScheduleButton = ({ currentFile, currentTask }) => {
           id="taskDueDate"
           label="Due Date"
           type="datetime-local"
+          className={classes.greenTaskStatus}
           onClick={(event) => event.stopPropagation()}
           onFocus={(event) => event.stopPropagation()}
           value={currentTask.taskDueDate}
