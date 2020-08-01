@@ -1,9 +1,17 @@
 {
-    "hosting": {
-        "amplifyhosting": {
-            "service": "amplifyhosting",
-            "providerPlugin": "awscloudformation",
-            "type": "manual"
-        }
-    }
+	"hosting": {
+		"amplifyhosting": {
+			"service": "amplifyhosting",
+			"providerPlugin": "awscloudformation",
+			"type": "manual"
+		}
+	},
+	"auth": {
+		"brainyweb023771ef": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [],
+			"customAuth": false
+		}
+	}
 }

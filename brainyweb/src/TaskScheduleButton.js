@@ -121,7 +121,6 @@ const TaskScheduleButton = ({ currentFile, currentTask }) => {
           onFocus={(event) => event.stopPropagation()}
           value={currentTask.taskDueDate}
           onChange={handleTaskDueDateChange}
-          className={classes.textField}
           InputLabelProps={{
             shrink: true,
           }}

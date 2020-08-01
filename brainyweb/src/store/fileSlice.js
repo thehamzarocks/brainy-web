@@ -11,10 +11,15 @@ export const fileSlice = createSlice({
   //     error: null,
   //   },
   initialState: {
+    userId: null,
     filesList: [],
     currentFileId: "",
   },
   reducers: {
+    updateUser: (state, action) => {
+      console.log("updating user");
+      state.userId = action.payload;
+    },
     addFiles: (state, action) => {
       console.log("adding files");
       state.filesList = action.payload;
@@ -62,7 +67,7 @@ export const fileSlice = createSlice({
   //   },
 });
 
-export const { addFiles, updateFile, updateCurrentFile, deleteFile } = fileSlice.actions;
+export const { updateUser, addFiles, updateFile, updateCurrentFile, deleteFile } = fileSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -78,6 +83,10 @@ export const { addFiles, updateFile, updateCurrentFile, deleteFile } = fileSlice
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state) => state.counter.value)`
 // export const selectCount = state => state.counter.value;
+export const selectSignedInUser = (state) => {
+  return state.appReducer.userId;
+}
+
 export const selectAllFiles = (state) => {
   console.log("selecting value");
   return state.appReducer.filesList;

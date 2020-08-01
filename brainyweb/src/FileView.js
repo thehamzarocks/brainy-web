@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
@@ -44,14 +44,38 @@ function ScatchFile() {
   const history = useHistory();
 
   let { fileId } = useParams();
+  let { matchIndex } = useParams();
 
   const currentFile = useSelector((state) => selectFile(state, fileId)) ?? {};
 
+  const setSelectionRange1 = (textArea, selectionStart, selectionEnd) => {
+    textArea.focus();
+
+    const fullText = textArea.value;
+    textArea.value = fullText.substring(0, selectionEnd);
+    textArea.scrollTop = textArea.scrollHeight;
+    textArea.value = fullText;
+
+    textArea.setSelectionRange(selectionStart, selectionEnd);
+  };
+
+  const scrollToMatch = useCallback((matchIndex) => {
+    const selectionStart = Math.max(matchIndex - 50,0);
+    const selectionEnd = selectionStart + 100;
+    console.log("scrolling to match");
+    var textArea1 = document.getElementById("infoText");
+    console.log(textArea1);
+    setSelectionRange1(textArea1, selectionStart, selectionEnd);
+  }, []);
+
   useEffect(() => {
     dispatch(updateCurrentFile(fileId));
-  }, [dispatch, fileId]);
+    if (matchIndex) {
+      scrollToMatch(matchIndex);
+    }
+  }, [dispatch, fileId, scrollToMatch, matchIndex]);
 
-  const [tabIndex, setTabIndex] = React.useState(0);
+  const [tabIndex, setTabIndex] = React.useState(1);
 
   const handleTabChange = (event, newValue) => {
     setTabIndex(newValue);
@@ -81,6 +105,29 @@ function ScatchFile() {
         history.push("/start");
       });
   };
+
+  function setSelectionRange(textarea, selectionStart, selectionEnd) {
+    // First scroll selection region to view
+    const fullText = textarea.value;
+    textarea.value = fullText.substring(0, selectionEnd);
+    // For some unknown reason, you must store the scollHeight to a variable
+    // before setting the textarea value. Otherwise it won't work for long strings
+    const scrollHeight = textarea.scrollHeight;
+    textarea.value = fullText;
+    let scrollTop = scrollHeight;
+    const textareaHeight = textarea.clientHeight;
+    if (scrollTop > textareaHeight) {
+      // scroll selection to center of textarea
+      scrollTop -= textareaHeight / 2;
+    } else {
+      scrollTop = 0;
+    }
+    textarea.scrollTop = scrollTop;
+
+    // Continue to set selection range
+    textarea.focus();
+    textarea.setSelectionRange(selectionStart, selectionEnd);
+  }
 
   return (
     <React.Fragment>
@@ -121,6 +168,7 @@ function ScatchFile() {
             <SortableComponent />
           </TabPanel>
           <TabPanel value={tabIndex} index={1}>
+            <Button onClick={scrollToMatch}>Scroll to Match</Button>
             <TextField
               spellCheck="false"
               fullWidth={true}

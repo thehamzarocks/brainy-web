@@ -13,6 +13,8 @@ import { addFiles } from "./store/fileSlice";
 import About from "./Tag";
 import { createMuiTheme } from "@material-ui/core/styles";
 
+import { Auth } from "aws-amplify";
+
 const mainTheme = createMuiTheme({
   palette: {
     primary: {
@@ -59,6 +61,9 @@ function App() {
               </Route>
               <Route path="/start">
                 <StartPage />
+              </Route>
+              <Route path="/files/:fileId/:matchIndex">
+                <FileView />
               </Route>
               <Route path="/files/:fileId">
                 <FileView />
