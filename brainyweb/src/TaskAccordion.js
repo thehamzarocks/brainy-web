@@ -8,13 +8,12 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import ArrowDropDownCircleIcon from "@material-ui/icons/ArrowDropDownCircle";
-import DeleteIcon from "@material-ui/icons/Delete";
-import CancelIcon from "@material-ui/icons/Cancel";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { selectCurrentFile, updateFile } from "./store/fileSlice";
 import { useDispatch, useSelector } from "react-redux";
-import Popover from "@material-ui/core/Popover";
 import { makeStyles } from "@material-ui/core/styles";
+import TaskDeleteButton from "./TaskDeleteButton";
+import TaskScheduleButton from "./TaskScheduleButton";
 
 const Accordion = withStyles({
   root: {
@@ -71,8 +70,6 @@ export default function TaskAccordion(props) {
 
   const currentFile = useSelector(selectCurrentFile);
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
   const currentTask = currentFile.tasks.find((task) => {
     return task.taskId === props.taskId;
   });
@@ -81,19 +78,6 @@ export default function TaskAccordion(props) {
   //   const handleInfoChange = (event) => {
   //     setInfoValue(event.target.value);
   //   };
-
-  const handlePopupClick = (event) => {
-    event.stopPropagation();
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePopupClose = (event) => {
-    event.stopPropagation();
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -137,16 +121,6 @@ export default function TaskAccordion(props) {
 
     const updatedFile = { ...currentFile, tasks: updatedTasksList };
     dispatch(updateFile(updatedFile));
-  };
-
-  const handleTaskDelete = (event) => {
-    event.stopPropagation();
-    const updatedTasksList = currentFile.tasks.filter((task) => {
-      return task.taskId !== currentTask.taskId;
-    });
-    const updatedFile = { ...currentFile, tasks: updatedTasksList };
-    dispatch(updateFile(updatedFile));
-    handlePopupClose(event);
   };
 
   const taskStatusIcon = () => {
@@ -199,34 +173,8 @@ export default function TaskAccordion(props) {
 
           <Typography>
             <Button onClick={handleTaskStatusChange}>{taskStatusIcon()}</Button>
-            <Button onClick={handlePopupClick}>
-              <DeleteIcon />
-            </Button>
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handlePopupClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "center",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-            >
-              <Typography>
-                <div>
-                  <Button onClick={handleTaskDelete}>
-                    <DeleteIcon />
-                  </Button>
-                  <Button onClick={handlePopupClose}>
-                    <CancelIcon />
-                  </Button>
-                </div>
-              </Typography>
-            </Popover>
+            <TaskScheduleButton currentFile={currentFile} currentTask={currentTask}/>
+            <TaskDeleteButton currentFile={currentFile} currentTask={currentTask}/>
             <Button onClick={() => console.log("hello")}>
               <ArrowDropDownCircleIcon />
             </Button>
