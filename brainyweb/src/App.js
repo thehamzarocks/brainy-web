@@ -20,14 +20,18 @@ const mainTheme = createMuiTheme({
   palette: {
     primary: {
       main: "#0b4644",
-      secondary: "#146d65",
+      secondary: "pink",
+      text: "pink"
     },
   },
 });
 
-const useStyles = makeStyles((theme) => ({
+export const mainStyles = makeStyles((theme) => ({
   root: {
     justifyContent: "center",
+  },
+  textColor: {
+    color: "pink"
   },
   sectionPlaceHolder: {
     padding: theme.spacing(5),
@@ -37,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
-  const classes = useStyles();
+  const classes = mainStyles();
   const dispatch = useDispatch();
 
   const userToken = useSelector(selectUserToken);

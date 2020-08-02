@@ -22,7 +22,7 @@ import axios from "axios";
 import Tag from "./Tag";
 import TabPanel, { tabProp } from "./TabPanel";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   tabPanel: {
     display: "flex",
   },
@@ -32,12 +32,15 @@ const useStyles = makeStyles(() => ({
   fileHeader: {
     display: "flex",
     flexDirection: "row",
+    margin: theme.spacing(2),
+    marginBottom: theme.spacing(1)
   },
   fileName: {
     flexGrow: "1",
   },
   tags: {
     flexGrow: "3",
+    margin: theme.spacing(2)
   },
 }));
 

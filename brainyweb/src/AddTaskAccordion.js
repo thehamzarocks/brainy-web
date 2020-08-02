@@ -9,7 +9,8 @@ import { selectCurrentFile, updateFile } from "./store/fileSlice";
 const useStyles = makeStyles((theme) => ({
   addTaskBar: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
+    margin: theme.spacing(2)
   },
   root: {
     justifyContent: "center",

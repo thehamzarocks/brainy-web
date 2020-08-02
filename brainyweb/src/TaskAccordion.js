@@ -15,22 +15,26 @@ import { makeStyles } from "@material-ui/core/styles";
 import TaskDeleteButton from "./TaskDeleteButton";
 import TaskScheduleButton from "./TaskScheduleButton";
 
-const Accordion = withStyles({
+const Accordion = withStyles((theme) => ({
   root: {
-    border: "1px solid rgba(0, 0, 0, .125)",
-    boxShadow: "none",
+    // border: "1px solid rgba(0, 0, 0, .125)",
+    boxShadow: "0px 0px 1px 2px #f3f3ad",
+    // boxShadow: "none",
+    margin: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    backgroundColor: "#f3f3ad5c",
     "&:not(:last-child)": {
       borderBottom: 0,
     },
     "&:before": {
       display: "none",
     },
-    "&$expanded": {
-      margin: "auto",
-    },
+    // "&$expanded": {
+    //   margin: "auto",
+    // },
   },
   expanded: {},
-})(MuiAccordion);
+}))(MuiAccordion);
 
 const AccordionSummary = withStyles({
   root: {

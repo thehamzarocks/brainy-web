@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Accordion = withStyles({
   root: {
+    backgroundColor: "#f3edcd",
     border: "1px solid rgba(0, 0, 0, .125)",
     boxShadow: "none",
     "&:not(:last-child)": {
@@ -41,17 +42,19 @@ const Accordion = withStyles({
 
 const AccordionSummary = withStyles({
   root: {
-    backgroundColor: "rgba(0, 0, 0, .03)",
+    // backgroundColor: "rgba(0, 0, 0, .03)",
+    backgroundColor: "#f3edcd",
     borderBottom: "1px solid rgba(0, 0, 0, .125)",
     marginBottom: -1,
-    minHeight: 56,
+    minHeight: 0,
     "&$expanded": {
-      minHeight: 56,
+      minHeight: 0,
     },
   },
   content: {
+    margin: "5px 5px 5px 5px",
     "&$expanded": {
-      margin: "12px 0",
+      margin: "5px 5px 5px 5px",
     },
   },
   expanded: {},
