@@ -11,9 +11,11 @@ import { useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   selectFile,
+  selectUserToken,
   updateFile,
   updateCurrentFile,
   deleteFile,
+  updateActionStatus,
 } from "./store/fileSlice";
 import axios from "axios";
 import Tag from "./Tag";
@@ -47,6 +49,7 @@ function ScatchFile() {
   let { matchIndex } = useParams();
 
   const currentFile = useSelector((state) => selectFile(state, fileId)) ?? {};
+  const userToken = useSelector(selectUserToken);
 
   const setSelectionRange1 = (textArea, selectionStart, selectionEnd) => {
     textArea.focus();
@@ -60,7 +63,7 @@ function ScatchFile() {
   };
 
   const scrollToMatch = useCallback((matchIndex) => {
-    const selectionStart = Math.max(matchIndex - 50,0);
+    const selectionStart = Math.max(matchIndex - 50, 0);
     const selectionEnd = selectionStart + 100;
     console.log("scrolling to match");
     var textArea1 = document.getElementById("infoText");
@@ -89,21 +92,39 @@ function ScatchFile() {
   };
 
   const handleSave = (event) => {
+    dispatch(updateActionStatus({status: "pending", statusMessage: "Saving File..."}));
     axios
-      .put("https://lyjcnc.deta.dev/files/" + currentFile.key, currentFile)
+      .put("https://lyjcnc.deta.dev/files/" + currentFile.key, currentFile, {
+        headers: {
+          "cognito-auth": userToken,
+        },
+      })
       .then((response) => {
         console.log("Save succesful!");
-      });
+        dispatch(updateActionStatus({status: "success", statusMessage: "Saved successfully"}));
+      })
+      .catch(error => {
+        dispatch(updateActionStatus({status: "error", statusMessage: "Error Saving File"}));
+      });;
   };
 
   const handleDelete = (event) => {
+    dispatch(updateActionStatus({status: "pending", statusMessage: "Deleting File..."}));
     axios
-      .delete("https://lyjcnc.deta.dev/files/" + currentFile.key)
+      .delete("https://lyjcnc.deta.dev/files/" + currentFile.key, {
+        headers: {
+          "cognito-auth": userToken,
+        },
+      })
       .then((response) => {
         console.log("Delete succesful!");
+        dispatch(updateActionStatus({status: "success", statusMessage: "Deleted successfully"}));
         dispatch(deleteFile(currentFile));
         history.push("/start");
-      });
+      })
+      .catch(error => {
+        dispatch(updateActionStatus({status: "error", statusMessage: "Error Deleting File"}));
+      });;
   };
 
   function setSelectionRange(textarea, selectionStart, selectionEnd) {

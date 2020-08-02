@@ -7,7 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser, selectSignedInUser } from "./store/fileSlice";
+import { updateUser, updateUserToken, selectSignedInUser } from "./store/fileSlice";
 
 const useStyles = makeStyles(() => ({
   grow: {
@@ -36,6 +36,7 @@ function HeaderBar() {
       Auth.currentSession().then(response => {
         console.log("current session:");
         console.log(response);
+        dispatch(updateUserToken(response.getIdToken().getJwtToken()));
       })
       Auth.currentAuthenticatedUser()
         .then((user) => {

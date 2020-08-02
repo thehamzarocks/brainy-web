@@ -8,7 +8,7 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 import { useSelector, useDispatch } from "react-redux";
-import { selectAllFiles, addFiles } from "./store/fileSlice";
+import { selectAllFiles, selectUserToken, addFiles, updateActionStatus } from "./store/fileSlice";
 import axios from "axios";
 import { getRenderedResults } from "./search/search-utils";
 
@@ -47,6 +47,7 @@ function StartPage() {
   const [searchText, setSearchText] = React.useState("");
 
   let files = useSelector(selectAllFiles);
+  const userToken = useSelector(selectUserToken);
 
   if (!files) {
     files = [];
@@ -63,18 +64,31 @@ function StartPage() {
   };
 
   const handleAddFile = () => {
+    dispatch(updateActionStatus({status: "pending", statusMessage: "Creating File..."}));
     axios
-      .post("https://lyjcnc.deta.dev/files/", {
-        fileName: newFileName,
-        info: "",
-        tags: [],
-        tasks: [],
-        userId: "123",
-      })
+      .post(
+        "https://lyjcnc.deta.dev/files/",
+        {
+          fileName: newFileName,
+          userEmail: "",
+          info: "",
+          tags: [],
+          tasks: [],
+        },
+        {
+          headers: {
+            "cognito-auth": userToken,
+          },
+        }
+      )
       .then((response) => {
         const updatedFilesList = [...files, response.data];
+        dispatch(updateActionStatus({status: "success", statusMessage: "File Created"}));
         dispatch(addFiles(updatedFilesList));
         setNewFileName("");
+      })
+      .catch(error => {
+        dispatch(updateActionStatus({status: "error", statusMessage: "Error Creating File"}));
       });
   };
 

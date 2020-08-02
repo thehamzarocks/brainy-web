@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, compose, current } from "@reduxjs/toolkit";
 
 export const fileSlice = createSlice({
   name: "files",
@@ -12,13 +12,22 @@ export const fileSlice = createSlice({
   //   },
   initialState: {
     userId: null,
+    userToken: "",
     filesList: [],
     currentFileId: "",
+    actionStatus: {
+      status: "",
+      statusMessage: "",
+    },
   },
   reducers: {
     updateUser: (state, action) => {
       console.log("updating user");
       state.userId = action.payload;
+    },
+    updateUserToken: (state, action) => {
+      console.log("updating user token");
+      state.userToken = action.payload;
     },
     addFiles: (state, action) => {
       console.log("adding files");
@@ -32,7 +41,7 @@ export const fileSlice = createSlice({
         if (item.key !== state.currentFileId) {
           return item;
         }
-        
+
         return {
           ...item,
           ...action.payload,
@@ -46,8 +55,15 @@ export const fileSlice = createSlice({
     deleteFile: (state, action) => {
       console.log("Deleting file");
       state.filesList = state.filesList.filter((item) => {
-        return item.key !== action.payload.key
+        return item.key !== action.payload.key;
       });
+    },
+    updateActionStatus: (state, action) => {
+      console.log("Updating action status");
+      state.actionStatus = {
+        status: action.payload.status,
+        statusMessage: action.payload.statusMessage,
+      };
     },
   },
   //   extraReducers: {
@@ -67,7 +83,15 @@ export const fileSlice = createSlice({
   //   },
 });
 
-export const { updateUser, addFiles, updateFile, updateCurrentFile, deleteFile } = fileSlice.actions;
+export const {
+  updateUser,
+  updateUserToken,
+  addFiles,
+  updateFile,
+  updateCurrentFile,
+  deleteFile,
+  updateActionStatus,
+} = fileSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -85,7 +109,11 @@ export const { updateUser, addFiles, updateFile, updateCurrentFile, deleteFile }
 // export const selectCount = state => state.counter.value;
 export const selectSignedInUser = (state) => {
   return state.appReducer.userId;
-}
+};
+
+export const selectUserToken = (state) => {
+  return state.appReducer.userToken;
+};
 
 export const selectAllFiles = (state) => {
   console.log("selecting value");
@@ -96,14 +124,28 @@ export const selectFile = (state, fileId) => {
   const selectedFile = state.appReducer.filesList.find((file) => {
     return file.key === fileId;
   });
-  return selectedFile || {};
+  const copiedFile = {...selectedFile};
+  if (!copiedFile.tags) {
+    copiedFile.tags = [];
+  }
+  if(!copiedFile.tasks) {
+    copiedFile.tasks = [];
+  }
+  return copiedFile || {};
 };
 
 export const selectCurrentFile = (state) => {
   const currentFile = state.appReducer.filesList.find((file) => {
     return file.key === state.appReducer.currentFileId;
   });
-  return currentFile || {};
+  const copiedFile = {...currentFile};
+  if (!copiedFile.tags) {
+    copiedFile.tags = [];
+  }
+  if(!copiedFile.tasks) {
+    copiedFile.tasks = [];
+  }
+  return copiedFile || {};
 };
 
 export const selectTagOptions = (state) => {
@@ -118,5 +160,9 @@ export const selectTagOptions = (state) => {
   });
   return [...tags.keys()];
 };
+
+export const selectActionStatus = (state) => {
+  return state.appReducer.actionStatus;
+}
 
 export default fileSlice.reducer;

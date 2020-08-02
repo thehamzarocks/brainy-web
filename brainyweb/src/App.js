@@ -8,12 +8,13 @@ import Layout from "./Layout";
 import StartPage from "./StartPage";
 import FileView from "./FileView";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { addFiles } from "./store/fileSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserToken, updateActionStatus, addFiles } from "./store/fileSlice";
 import About from "./Tag";
 import { createMuiTheme } from "@material-ui/core/styles";
 
 import { Auth } from "aws-amplify";
+import SimpleSnackbar from "./Snackbar";
 
 const mainTheme = createMuiTheme({
   palette: {
@@ -39,16 +40,28 @@ function App() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const userToken = useSelector(selectUserToken);
+
   useEffect(() => {
+    if (!userToken) {
+      return;
+    }
+    dispatch(updateActionStatus({status: "pending", statusMessage: "Fetching Your Files..."}));
     axios
-      .get("https://lyjcnc.deta.dev/files/")
+      .get("https://lyjcnc.deta.dev/files/", {
+        headers: {
+          "cognito-auth": userToken
+        }
+      })
       .then(function (response) {
+        dispatch(updateActionStatus({status: "success", statusMessage: "Fetched Your Files"}));
         dispatch(addFiles(response.data[0]));
       })
       .catch(function (error) {
         console.log(error);
+        dispatch(updateActionStatus({status: "error", statusMessage: "Error Fetching Your Files"}));
       });
-  }, [dispatch]);
+  }, [dispatch, userToken]);
 
   return (
     <ThemeProvider theme={mainTheme}>
@@ -74,6 +87,7 @@ function App() {
             </Switch>
           </Layout>
         </Router>
+        <SimpleSnackbar/>
       </Container>
     </ThemeProvider>
   );
