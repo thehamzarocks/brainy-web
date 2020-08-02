@@ -59,10 +59,18 @@ function App() {
       })
       .catch(function (error) {
         console.log(error);
-        dispatch(updateActionStatus({status: "error", statusMessage: "Error Fetching Your Files"}));
+        dispatch(updateActionStatus({status: "error", statusMessage: "Error Fetching Your Files, using local data instead"}));
+        const filesList = window.localStorage.getItem("filesList");
+        if (!filesList) {
+          dispatch(updateActionStatus({status: "error", statusMessage: "Unable to fetch your files"}));
+        }
+        dispatch(addFiles(JSON.parse(filesList)));
       });
   }, [dispatch, userToken]);
 
+  if(!userToken) {
+    window.href = "/";
+  }
   return (
     <ThemeProvider theme={mainTheme}>
       <Container maxWidth="sm" className={classes.root}>

@@ -16,6 +16,7 @@ import {
   updateCurrentFile,
   deleteFile,
   updateActionStatus,
+  selectAllFiles,
 } from "./store/fileSlice";
 import axios from "axios";
 import Tag from "./Tag";
@@ -48,6 +49,7 @@ function ScatchFile() {
   let { fileId } = useParams();
   let { matchIndex } = useParams();
 
+  const filesList = useSelector(selectAllFiles);
   const currentFile = useSelector((state) => selectFile(state, fileId)) ?? {};
   const userToken = useSelector(selectUserToken);
 
@@ -75,6 +77,8 @@ function ScatchFile() {
     dispatch(updateCurrentFile(fileId));
     if (matchIndex) {
       scrollToMatch(matchIndex);
+    } else {
+      setTabIndex(0);
     }
   }, [dispatch, fileId, scrollToMatch, matchIndex]);
 
@@ -106,6 +110,11 @@ function ScatchFile() {
       .catch(error => {
         dispatch(updateActionStatus({status: "error", statusMessage: "Error Saving File"}));
       });;
+      try {
+        window.localStorage.setItem("filesList", JSON.stringify(filesList));
+      } catch (error) {
+        console.log("Unable to save to localstorage", error);
+      }
   };
 
   const handleDelete = (event) => {
