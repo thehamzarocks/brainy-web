@@ -19,6 +19,7 @@ export const fileSlice = createSlice({
       status: "",
       statusMessage: "",
     },
+    dirty: false
   },
   reducers: {
     updateUser: (state, action) => {
@@ -47,6 +48,7 @@ export const fileSlice = createSlice({
           ...action.payload,
         };
       });
+      state.dirty = true
     },
     updateCurrentFile: (state, action) => {
       console.log("updating current files");
@@ -65,6 +67,10 @@ export const fileSlice = createSlice({
         statusMessage: action.payload.statusMessage,
       };
     },
+    clearDirtyState: (state) => {
+      console.log("clearing dirty state");
+      state.dirty = false
+    }
   },
   //   extraReducers: {
   //     [fetchFiles.pending]: (state, action) => {
@@ -91,6 +97,7 @@ export const {
   updateCurrentFile,
   deleteFile,
   updateActionStatus,
+  clearDirtyState
 } = fileSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -164,5 +171,11 @@ export const selectTagOptions = (state) => {
 export const selectActionStatus = (state) => {
   return state.appReducer.actionStatus;
 }
+
+export const selectIsDirtyState = (state) => {
+  return state.appReducer.dirty;
+}
+
+
 
 export default fileSlice.reducer;

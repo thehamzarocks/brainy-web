@@ -17,10 +17,13 @@ import {
   deleteFile,
   updateActionStatus,
   selectAllFiles,
+  selectIsDirtyState,
+  clearDirtyState
 } from "./store/fileSlice";
 import axios from "axios";
 import Tag from "./Tag";
 import TabPanel, { tabProp } from "./TabPanel";
+import { Prompt } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   tabPanel: {
@@ -33,14 +36,14 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
     margin: theme.spacing(2),
-    marginBottom: theme.spacing(1)
+    marginBottom: theme.spacing(1),
   },
   fileName: {
     flexGrow: "1",
   },
   tags: {
     flexGrow: "3",
-    margin: theme.spacing(2)
+    margin: theme.spacing(2),
   },
 }));
 
@@ -55,6 +58,13 @@ function ScatchFile() {
   const filesList = useSelector(selectAllFiles);
   const currentFile = useSelector((state) => selectFile(state, fileId)) ?? {};
   const userToken = useSelector(selectUserToken);
+  const shouldBlockNavigation = useSelector(selectIsDirtyState);
+
+  if (shouldBlockNavigation) {
+    window.onbeforeunload = () => true;
+  } else {
+    window.onbeforeunload = undefined;
+  }
 
   const setSelectionRange1 = (textArea, selectionStart, selectionEnd) => {
     textArea.focus();
@@ -99,7 +109,10 @@ function ScatchFile() {
   };
 
   const handleSave = (event) => {
-    dispatch(updateActionStatus({status: "pending", statusMessage: "Saving File..."}));
+    dispatch(
+      updateActionStatus({ status: "pending", statusMessage: "Saving File..." })
+    );
+    dispatch(clearDirtyState())
     axios
       .put("https://lyjcnc.deta.dev/files/" + currentFile.key, currentFile, {
         headers: {
@@ -108,20 +121,35 @@ function ScatchFile() {
       })
       .then((response) => {
         console.log("Save succesful!");
-        dispatch(updateActionStatus({status: "success", statusMessage: "Saved successfully"}));
+        dispatch(
+          updateActionStatus({
+            status: "success",
+            statusMessage: "Saved successfully",
+          })
+        );
       })
-      .catch(error => {
-        dispatch(updateActionStatus({status: "error", statusMessage: "Error Saving File"}));
-      });;
-      try {
-        window.localStorage.setItem("filesList", JSON.stringify(filesList));
-      } catch (error) {
-        console.log("Unable to save to localstorage", error);
-      }
+      .catch((error) => {
+        dispatch(
+          updateActionStatus({
+            status: "error",
+            statusMessage: "Error Saving File",
+          })
+        );
+      });
+    try {
+      window.localStorage.setItem("filesList", JSON.stringify(filesList));
+    } catch (error) {
+      console.log("Unable to save to localstorage", error);
+    }
   };
 
   const handleDelete = (event) => {
-    dispatch(updateActionStatus({status: "pending", statusMessage: "Deleting File..."}));
+    dispatch(
+      updateActionStatus({
+        status: "pending",
+        statusMessage: "Deleting File...",
+      })
+    );
     axios
       .delete("https://lyjcnc.deta.dev/files/" + currentFile.key, {
         headers: {
@@ -130,13 +158,23 @@ function ScatchFile() {
       })
       .then((response) => {
         console.log("Delete succesful!");
-        dispatch(updateActionStatus({status: "success", statusMessage: "Deleted successfully"}));
+        dispatch(
+          updateActionStatus({
+            status: "success",
+            statusMessage: "Deleted successfully",
+          })
+        );
         dispatch(deleteFile(currentFile));
         history.push("/start");
       })
-      .catch(error => {
-        dispatch(updateActionStatus({status: "error", statusMessage: "Error Deleting File"}));
-      });;
+      .catch((error) => {
+        dispatch(
+          updateActionStatus({
+            status: "error",
+            statusMessage: "Error Deleting File",
+          })
+        );
+      });
   };
 
   function setSelectionRange(textarea, selectionStart, selectionEnd) {
@@ -164,6 +202,10 @@ function ScatchFile() {
 
   return (
     <React.Fragment>
+      <Prompt
+        when={shouldBlockNavigation}
+        message="You have unsaved changes, are you sure you want to leave?"
+      />
       <div className={classes.fileHeader}>
         <div className={classes.fileName}>
           <Typography variant="h6">{currentFile.fileName}</Typography>
