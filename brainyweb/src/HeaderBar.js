@@ -7,7 +7,13 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
 import Amplify, { Auth } from "aws-amplify";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUser, updateUserToken, selectSignedInUser } from "./store/fileSlice";
+import {
+  updateUser,
+  updateUserToken,
+  selectSignedInUser,
+  selectUserToken,
+} from "./store/fileSlice";
+import { GoogleLogin, GoogleLogout } from "react-google-login";
 
 // Amplify.configure({
 //   Auth: {
@@ -18,7 +24,7 @@ import { updateUser, updateUserToken, selectSignedInUser } from "./store/fileSli
 //       // REQUIRED - Amazon Cognito Region
 //       region: 'ap-southeast-1',
 
-//       // OPTIONAL - Amazon Cognito Federated Identity Pool Region 
+//       // OPTIONAL - Amazon Cognito Federated Identity Pool Region
 //       // Required only if it's different from Amazon Cognito Region
 //       // identityPoolRegion: 'XX-XXXX-X',
 
@@ -72,71 +78,122 @@ const useStyles = makeStyles(() => ({
   grow: {
     flexGrow: 1,
   },
+  loginButton: {
+    color: "white"
+  }
 }));
 
 function HeaderBar() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const signedInUser = useSelector(selectSignedInUser);
+  const signedInUser = useSelector(selectUserToken);
 
-  const signIn = () => {
-    Auth.federatedSignIn();
-  };
+  // const signedInUser = useSelector(selectSignedInUser);
 
-  useEffect(checkUser);
+  // const signIn = () => {
+  //   Auth.federatedSignIn();
+  // };
 
-  function checkUser() {
-    if (!signedInUser) {
-      Auth.currentCredentials().then(response => {
-        console.log("current credentials:");
-        console.log(response);
-      })
-      Auth.currentSession().then(response => {
-        console.log("current session:");
-        console.log(response);
-        dispatch(updateUserToken(response.getIdToken().getJwtToken()));
-      })
-      Auth.currentAuthenticatedUser()
-        .then((user) => {
-          console.log({ user });
-          dispatch(
-            updateUser({
-              email: user.attributes.email,
-            })
-          );
-        })
-        .catch((err) => console.log(err));
-    }
-  }
+  // useEffect(checkUser);
 
-  function signOut() {
-    Auth.signOut()
-      .then((data) => {
-        console.log(data);
-        dispatch(updateUser(null));
-      })
-      .catch((err) => console.log(err));
-  }
+  // function checkUser() {
+  //   if (!signedInUser) {
+  //     Auth.currentCredentials().then((response) => {
+  //       console.log("current credentials:");
+  //       console.log(response);
+  //     });
+  //     Auth.currentSession().then((response) => {
+  //       console.log("current session:");
+  //       console.log(response);
+  //       dispatch(updateUserToken(response.getIdToken().getJwtToken()));
+  //     });
+  //     Auth.currentAuthenticatedUser()
+  //       .then((user) => {
+  //         console.log({ user });
+  //         dispatch(
+  //           updateUser({
+  //             email: user.attributes.email,
+  //           })
+  //         );
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }
+  // }
+
+  // function signOut() {
+  //   Auth.signOut()
+  //     .then((data) => {
+  //       console.log(data);
+  //       dispatch(updateUser(null));
+  //     })
+  //     .catch((err) => console.log(err));
+  // }
 
   const loginButton = () => {
     if (!signedInUser) {
       return (
-        <Button onClick={signIn} color="inherit">
-          Login
-        </Button>
+        <GoogleLogin
+          clientId="622137806111-or2i2t2q7a8926hmf18nfg1i8uhlev7t.apps.googleusercontent.com"
+          render={(renderProps) => (
+            <Button
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
+              className={classes.loginButton}
+            >
+              Log In With Google
+            </Button>
+          )}
+          buttonText="Login"
+          onSuccess={responseGoogle}
+          onFailure={responseGoogle}
+          isSignedIn={true}
+          cookiePolicy={"single_host_origin"}
+        />
       );
     } else {
       return (
-        <Button onClick={signOut} color="inherit">
-          Log Out
-        </Button>
+        <GoogleLogout
+          clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+          render={(renderProps) => (
+            <Button
+              onClick={renderProps.onClick}
+              disabled={renderProps.disabled}
+              className={classes.loginButton}
+            >
+              Log Out
+            </Button>
+          )}
+          buttonText="Logout"
+          onLogoutSuccess={logoutGoogle}
+        ></GoogleLogout>
       );
     }
   };
 
+  const onSignIn = (googleUser) => {
+    var profile = googleUser.getBasicProfile();
+    console.log("ID: " + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log("Name: " + profile.getName());
+    console.log("Image URL: " + profile.getImageUrl());
+    console.log("Email: " + profile.getEmail()); // This is null if the 'email' scope is not present.
+  };
+
+  const responseGoogle = (response) => {
+    console.log(response);
+    const idToken = response.getAuthResponse().id_token;
+    dispatch(updateUserToken(idToken));
+  };
+
+  const logoutGoogle = (response) => {
+    console.log(response);
+    dispatch(updateUserToken(undefined));
+  };
+
   return (
     <AppBar position="static">
+      {/* <div class="g-signin2" data-onsuccess="onSignIn"></div> */}
+      <div></div>
       <Toolbar>
         <Button
           component={Link}

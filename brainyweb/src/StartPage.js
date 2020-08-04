@@ -95,7 +95,7 @@ function StartPage() {
         },
         {
           headers: {
-            "cognito-auth": userToken,
+            "google-auth-token": userToken,
           },
         }
       )

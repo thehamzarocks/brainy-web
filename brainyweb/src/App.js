@@ -54,7 +54,7 @@ function App() {
     axios
       .get("https://lyjcnc.deta.dev/files/", {
         headers: {
-          "cognito-auth": userToken
+          "google-auth-token": userToken
         }
       })
       .then(function (response) {
@@ -77,7 +77,7 @@ function App() {
   }
   return (
     <ThemeProvider theme={mainTheme}>
-      <Container maxWidth="sm" className={classes.root}>
+      <Container  className={classes.root}>
         <Router>
           <Layout>
             <Switch>

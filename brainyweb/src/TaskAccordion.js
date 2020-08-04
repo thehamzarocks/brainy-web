@@ -20,7 +20,7 @@ const Accordion = withStyles((theme) => ({
     // border: "1px solid rgba(0, 0, 0, .125)",
     boxShadow: "0px 0px 1px 2px #f3f3ad",
     // boxShadow: "none",
-    margin: theme.spacing(1),
+    // margin: theme.spacing(1),
     marginBottom: theme.spacing(2),
     backgroundColor: "#f3f3ad5c",
     "&:not(:last-child)": {

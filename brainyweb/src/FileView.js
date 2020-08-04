@@ -116,7 +116,7 @@ function ScatchFile() {
     axios
       .put("https://lyjcnc.deta.dev/files/" + currentFile.key, currentFile, {
         headers: {
-          "cognito-auth": userToken,
+          "google-auth-token": userToken,
         },
       })
       .then((response) => {
@@ -153,7 +153,7 @@ function ScatchFile() {
     axios
       .delete("https://lyjcnc.deta.dev/files/" + currentFile.key, {
         headers: {
-          "cognito-auth": userToken,
+          "google-auth-token": userToken,
         },
       })
       .then((response) => {
