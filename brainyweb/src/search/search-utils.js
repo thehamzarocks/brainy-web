@@ -2,6 +2,8 @@ import React from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Link } from "react-router-dom";
+import { Typography } from "@material-ui/core";
+import DragHandleIcon from '@material-ui/icons/DragHandle';
 
 const fileSearchFilter = (file, searchText) => {
   return file.fileName.toLowerCase().includes(searchText.toLowerCase());
@@ -107,6 +109,13 @@ const renderMatchesBasedOnSearch = (files, searchType, searchText) => {
 };
 
 export const getRenderedResults = (files, searchType, searchText) => {
+  if(!files || files.length === 0) {
+    return (
+      <Typography>
+        You don't have any notes yet. Create a new note to get started.
+      </Typography>
+    )
+  }
   if (searchType === "Files" || searchType === "Tags") {
     return renderFilesBasedOnSearch(files, searchType, searchText);
   }

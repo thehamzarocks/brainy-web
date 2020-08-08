@@ -97,7 +97,7 @@ export default function Tag() {
           <Typography>Tags</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <div className={classes.root}>
+          <div className={classes.roots}>
             <Autocomplete
               onBlur={handleTagSelectorBlur}
               multiple

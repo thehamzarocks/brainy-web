@@ -5,6 +5,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectSignedInUser, selectUserToken } from "./store/fileSlice";
 
 const useStyles = makeStyles((theme) => ({
   hompageInfo: {
@@ -14,11 +16,12 @@ const useStyles = makeStyles((theme) => ({
   },
   startButton: {
     margin: theme.spacing(1),
-  }
+  },
 }));
 
 function HomePageContent() {
   const classes = useStyles();
+
   return (
     <React.Fragment>
       <Typography variant="h3" className={classes.hompageInfo} gutterBottom>
@@ -32,7 +35,7 @@ function HomePageContent() {
           to={"/start"}
           className={classes.startButton}
         >
-            Get Started
+          Get Started
         </Button>
       </Grid>
 
@@ -46,7 +49,7 @@ function HomePageContent() {
         Keep memories at your fingertips
       </Typography>
       <Typography variant="h5" className={classes.hompageInfo} gutterBottom>
-        Share your research
+        Get Intelligent Reminders
       </Typography>
 
       <Grid container justify="center">

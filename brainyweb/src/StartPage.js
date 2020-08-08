@@ -4,6 +4,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import Select from "@material-ui/core/Select";
 import List from "@material-ui/core/List";
 import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
@@ -40,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
   filesList: {
     // marginTop: theme.spacing(2),
-    margin: theme.spacing(1)
+    margin: theme.spacing(1),
   },
 }));
 
@@ -70,11 +71,13 @@ function StartPage() {
   };
 
   const handleAddFile = () => {
-    if (!newFileName.replace(/\s/g, '').length) {
-      dispatch(updateActionStatus({
-        status: "error",
-        statusMessage: "File name cannot be all blanks"
-      }));
+    if (!newFileName.replace(/\s/g, "").length) {
+      dispatch(
+        updateActionStatus({
+          status: "error",
+          statusMessage: "File name cannot be all blanks",
+        })
+      );
       return;
     }
     dispatch(
@@ -120,6 +123,12 @@ function StartPage() {
       });
   };
 
+  const signedInUser = useSelector(selectUserToken);
+
+  if (!signedInUser) {
+    return <Typography>Sign In to get started</Typography>;
+  }
+
   return (
     <React.Fragment>
       <div className={classes.searchBar}>
@@ -155,7 +164,7 @@ function StartPage() {
         <TextField
           spellCheck="false"
           fullWidth={true}
-          placeholder="Add File"
+          placeholder="Create note"
           value={newFileName}
           onChange={(event) => setNewFileName(event.target.value)}
         />

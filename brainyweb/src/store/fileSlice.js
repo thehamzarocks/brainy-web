@@ -19,7 +19,7 @@ export const fileSlice = createSlice({
       status: "",
       statusMessage: "",
     },
-    dirty: false
+    dirty: false,
   },
   reducers: {
     updateUser: (state, action) => {
@@ -33,6 +33,19 @@ export const fileSlice = createSlice({
     addFiles: (state, action) => {
       console.log("adding files");
       state.filesList = action.payload;
+      state.filesList = state.filesList.map((file) => {
+        const copiedFile = { ...file };
+        if (!copiedFile.tags) {
+          copiedFile.tags = [];
+        }
+        if (!copiedFile.tasks) {
+          copiedFile.tasks = [];
+        }
+        if (!copiedFile.info) {
+          copiedFile.info = "";
+        }
+        return copiedFile;
+      });
       // state.value = 5;
       console.log(state);
     },
@@ -48,7 +61,7 @@ export const fileSlice = createSlice({
           ...action.payload,
         };
       });
-      state.dirty = true
+      state.dirty = true;
     },
     updateCurrentFile: (state, action) => {
       console.log("updating current files");
@@ -69,8 +82,8 @@ export const fileSlice = createSlice({
     },
     clearDirtyState: (state) => {
       console.log("clearing dirty state");
-      state.dirty = false
-    }
+      state.dirty = false;
+    },
   },
   //   extraReducers: {
   //     [fetchFiles.pending]: (state, action) => {
@@ -97,7 +110,7 @@ export const {
   updateCurrentFile,
   deleteFile,
   updateActionStatus,
-  clearDirtyState
+  clearDirtyState,
 } = fileSlice.actions;
 
 // The function below is called a thunk and allows us to perform async logic. It
@@ -131,12 +144,15 @@ export const selectFile = (state, fileId) => {
   const selectedFile = state.appReducer.filesList.find((file) => {
     return file.key === fileId;
   });
-  const copiedFile = {...selectedFile};
+  const copiedFile = { ...selectedFile };
   if (!copiedFile.tags) {
     copiedFile.tags = [];
   }
-  if(!copiedFile.tasks) {
+  if (!copiedFile.tasks) {
     copiedFile.tasks = [];
+  }
+  if (!copiedFile.info) {
+    copiedFile.info = "";
   }
   return copiedFile || {};
 };
@@ -145,11 +161,11 @@ export const selectCurrentFile = (state) => {
   const currentFile = state.appReducer.filesList.find((file) => {
     return file.key === state.appReducer.currentFileId;
   });
-  const copiedFile = {...currentFile};
+  const copiedFile = { ...currentFile };
   if (!copiedFile.tags) {
     copiedFile.tags = [];
   }
-  if(!copiedFile.tasks) {
+  if (!copiedFile.tasks) {
     copiedFile.tasks = [];
   }
   return copiedFile || {};
@@ -170,12 +186,10 @@ export const selectTagOptions = (state) => {
 
 export const selectActionStatus = (state) => {
   return state.appReducer.actionStatus;
-}
+};
 
 export const selectIsDirtyState = (state) => {
   return state.appReducer.dirty;
-}
-
-
+};
 
 export default fileSlice.reducer;

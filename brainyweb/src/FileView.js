@@ -104,7 +104,7 @@ function ScatchFile() {
   const handleInfoChange = (event) => {
     // setInfoValue(event.target.value);
     const updatedCurrentFile = { ...currentFile };
-    updatedCurrentFile.info = event.target.value;
+    updatedCurrentFile.info = event.target.value || "";
     dispatch(updateFile(updatedCurrentFile));
   };
 
@@ -243,7 +243,6 @@ function ScatchFile() {
             <SortableComponent />
           </TabPanel>
           <TabPanel value={tabIndex} index={1}>
-            <Button onClick={scrollToMatch}>Scroll to Match</Button>
             <TextField
               spellCheck="false"
               fullWidth={true}

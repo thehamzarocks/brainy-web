@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import TaskDeleteButton from "./TaskDeleteButton";
 import TaskScheduleButton from "./TaskScheduleButton";
+import DragHandleIcon from '@material-ui/icons/DragHandle';
 
 const Accordion = withStyles((theme) => ({
   root: {
@@ -179,8 +180,11 @@ export default function TaskAccordion(props) {
             <Button onClick={handleTaskStatusChange}>{taskStatusIcon()}</Button>
             <TaskScheduleButton currentFile={currentFile} currentTask={currentTask}/>
             <TaskDeleteButton currentFile={currentFile} currentTask={currentTask}/>
-            <Button onClick={() => console.log("hello")}>
+            {/* <Button onClick={() => console.log("hello")}>
               <ArrowDropDownCircleIcon />
+            </Button> */}
+            <Button>
+              <DragHandleIcon/>
             </Button>
           </Typography>
         </AccordionSummary>
