@@ -67,10 +67,27 @@ const getMatchStringFromMatchIndex = (text, index) => {
   return text.substr(startIndex, 100);
 };
 
-const renderMatchesBasedOnSearch = (files, searchType, searchText) => {
+const getTaskMatches = (searchText, tasks) => {
+  if (!tasks || tasks.length === 0 || !searchText) {
+    return [];
+  }
+  const matchingTasks = tasks.filter((task) => {
+    if (task?.taskSummary?.toLowerCase()?.includes(searchText)) {
+      return true;
+    }
+    if (task?.taskLog?.toLowerCase()?.includes(searchText)) {
+      return true;
+    }
+    return false;
+  });
+  return matchingTasks;
+};
+
+const renderContentMatches = (files, searchText) => {
   const matches = [];
   files.forEach((file) => {
     const matchingIndices = getIndicesOf(searchText, file.info);
+
     matchingIndices.forEach((matchingIndex) => {
       matches.push({
         fileKey: file.key,
@@ -89,8 +106,7 @@ const renderMatchesBasedOnSearch = (files, searchType, searchText) => {
     //   });
     // });
   });
-
-  return matches.slice(0,20).map((match, index) => {
+  return matches.slice(0, 20).map((match, index) => {
     return (
       <ListItem
         key={match.fileKey + index}
@@ -107,18 +123,60 @@ const renderMatchesBasedOnSearch = (files, searchType, searchText) => {
   });
 };
 
+const renderMatchesBasedOnSearch = (files, searchType, searchText) => {
+  if (searchType === "Content") {
+    return renderContentMatches(files, searchText);
+  }
+  if (searchType === "Tasks") {
+    return renderTaskMatches(files, searchText);
+  }
+  if (searchType === "Any") {
+    const combinedMatches = renderContentMatches(files, searchText);
+    combinedMatches.push(renderTaskMatches(files, searchText));
+    return combinedMatches;
+  }
+};
+
 export const getRenderedResults = (files, searchType, searchText) => {
-  if(!files || files.length === 0) {
+  if (!files || files.length === 0) {
     return (
       <Typography>
         You don't have any notes yet. Create a new note to get started.
       </Typography>
-    )
+    );
   }
   if (searchType === "Files" || searchType === "Tags") {
     return renderFilesBasedOnSearch(files, searchType, searchText);
   }
-  if (searchType === "Content") {
+  if (searchType === "Content" || searchType === "Tasks" || searchType === "Any") {
     return renderMatchesBasedOnSearch(files, searchType, searchText);
   }
 };
+function renderTaskMatches(files, searchText) {
+  const taskMatches = [];
+  files.forEach((file) => {
+    const matchingTasks = getTaskMatches(searchText, file.tasks);
+    matchingTasks.forEach((match) => {
+      taskMatches.push({
+        fileKey: file.key,
+        fileName: file.fileName,
+        task: match.taskSummary,
+      });
+    });
+  });
+  return taskMatches.map((match, index) => {
+    return (
+      <ListItem
+        key={index}
+        component={Link}
+        to={"/files/" + match.fileKey}
+        button
+      >
+        <div>
+          <ListItemText primary={match.fileName} />
+          <ListItemText primary={match.task} />
+        </div>
+      </ListItem>
+    );
+  });
+}
