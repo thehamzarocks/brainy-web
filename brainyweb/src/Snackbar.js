@@ -1,8 +1,5 @@
 import React from "react";
-import Button from "@material-ui/core/Button";
 import Snackbar from "@material-ui/core/Snackbar";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
 import { useSelector, useDispatch } from "react-redux";
 import { selectActionStatus, updateActionStatus } from "./store/fileSlice";
 import MuiAlert from "@material-ui/lab/Alert";
@@ -56,6 +53,18 @@ export default function SimpleSnackbar() {
     return severity;
   };
 
+  const getRenderedSnackBar = () => {
+    const statusSeverity = getStatusSeverity();
+    // if (!statusSeverity) {
+    //   return;
+    // }
+    return (
+      <Alert onClose={handleClose} severity={getStatusSeverity()}>
+        {actionStatus.statusMessage}
+      </Alert>
+    );
+  };
+
   return (
     <div className={classes.root}>
       <Snackbar
@@ -65,10 +74,7 @@ export default function SimpleSnackbar() {
         // message={actionStatus.statusMessage}
       >
         <React.Fragment>
-          <Alert onClose={handleClose} severity={getStatusSeverity()}>
-            {actionStatus.statusMessage}
-          </Alert>
-
+          {getRenderedSnackBar()}
           {/* <IconButton
               size="small"
               aria-label="close"

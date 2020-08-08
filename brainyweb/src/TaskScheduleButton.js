@@ -1,13 +1,8 @@
 import React from "react";
-import DeleteIcon from "@material-ui/icons/Delete";
-import CancelIcon from "@material-ui/icons/Cancel";
 import Popover from "@material-ui/core/Popover";
 import Button from "@material-ui/core/Button";
 import { useDispatch } from "react-redux";
-import Typography from "@material-ui/core/Typography";
 import { updateFile } from "./store/fileSlice";
-import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
-import ScheduleIcon from "@material-ui/icons/Schedule";
 import WatchLaterIcon from "@material-ui/icons/WatchLater";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
@@ -76,7 +71,7 @@ const TaskScheduleButton = ({ currentFile, currentTask }) => {
     if (!currentTask.taskDueDate) {
       return;
     }
-    let taskScheduleClass = null;
+    
     if (currentTask.taskStatus === "Completed") {
       return classes.greenTaskStatus;
     }

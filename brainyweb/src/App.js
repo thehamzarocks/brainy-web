@@ -12,8 +12,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserToken, updateActionStatus, addFiles } from "./store/fileSlice";
 import About from "./Tag";
 import { createMuiTheme } from "@material-ui/core/styles";
-
-import { Auth } from "aws-amplify";
 import SimpleSnackbar from "./Snackbar";
 
 const mainTheme = createMuiTheme({

@@ -3,7 +3,6 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { Link } from "react-router-dom";
 import { Typography } from "@material-ui/core";
-import DragHandleIcon from '@material-ui/icons/DragHandle';
 
 const fileSearchFilter = (file, searchText) => {
   return file.fileName.toLowerCase().includes(searchText.toLowerCase());

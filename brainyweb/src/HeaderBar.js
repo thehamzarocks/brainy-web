@@ -1,16 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Button from "@material-ui/core/Button";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Link } from "react-router-dom";
-import Amplify, { Auth } from "aws-amplify";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  updateUser,
   updateUserToken,
-  selectSignedInUser,
   selectUserToken,
 } from "./store/fileSlice";
 import { GoogleLogin, GoogleLogout } from "react-google-login";
@@ -169,14 +166,6 @@ function HeaderBar() {
         ></GoogleLogout>
       );
     }
-  };
-
-  const onSignIn = (googleUser) => {
-    var profile = googleUser.getBasicProfile();
-    console.log("ID: " + profile.getId()); // Do not send to your backend! Use an ID token instead.
-    console.log("Name: " + profile.getName());
-    console.log("Image URL: " + profile.getImageUrl());
-    console.log("Email: " + profile.getEmail()); // This is null if the 'email' scope is not present.
   };
 
   const responseGoogle = (response) => {

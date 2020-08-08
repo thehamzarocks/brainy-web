@@ -6,8 +6,6 @@ import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import ArrowDropDownCircleIcon from "@material-ui/icons/ArrowDropDownCircle";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import { selectCurrentFile, updateFile } from "./store/fileSlice";
 import { useDispatch, useSelector } from "react-redux";

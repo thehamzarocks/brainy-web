@@ -177,29 +177,6 @@ function ScatchFile() {
       });
   };
 
-  function setSelectionRange(textarea, selectionStart, selectionEnd) {
-    // First scroll selection region to view
-    const fullText = textarea.value;
-    textarea.value = fullText.substring(0, selectionEnd);
-    // For some unknown reason, you must store the scollHeight to a variable
-    // before setting the textarea value. Otherwise it won't work for long strings
-    const scrollHeight = textarea.scrollHeight;
-    textarea.value = fullText;
-    let scrollTop = scrollHeight;
-    const textareaHeight = textarea.clientHeight;
-    if (scrollTop > textareaHeight) {
-      // scroll selection to center of textarea
-      scrollTop -= textareaHeight / 2;
-    } else {
-      scrollTop = 0;
-    }
-    textarea.scrollTop = scrollTop;
-
-    // Continue to set selection range
-    textarea.focus();
-    textarea.setSelectionRange(selectionStart, selectionEnd);
-  }
-
   return (
     <React.Fragment>
       <Prompt
