@@ -10,7 +10,12 @@ const useStyles = makeStyles((theme) => ({
   addTaskBar: {
     display: "flex",
     flexDirection: "row",
-    margin: theme.spacing(2)
+    margin: theme.spacing(2),
+  },
+  addTaskBarInput: {
+    border: "1px solid #becad6",
+    paddingLeft: "10px",
+    paddingTop: "5px"
   },
   root: {
     justifyContent: "center",
@@ -26,7 +31,7 @@ export default function AddTaskAccordion() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const currentFile = useSelector(selectCurrentFile);
-  
+
   const [newTaskSummary, setNewTaskSummary] = React.useState("");
 
   const handleAddTaskChange = (event) => {
@@ -39,10 +44,10 @@ export default function AddTaskAccordion() {
       taskId: currentFile.key + currentFile.tasks.length,
       priority: currentFile.tasks.length,
       taskLog: "",
-      taskSummary: newTaskSummary
+      taskSummary: newTaskSummary,
     });
 
-    const updatedFile = {...currentFile, tasks: updatedTasks}
+    const updatedFile = { ...currentFile, tasks: updatedTasks };
     dispatch(updateFile(updatedFile));
     setNewTaskSummary("");
   };
@@ -51,6 +56,7 @@ export default function AddTaskAccordion() {
   return (
     <div className={classes.addTaskBar}>
       <TextField
+        className={classes.addTaskBarInput}
         spellCheck="false"
         fullWidth={true}
         rows="3"
@@ -58,6 +64,7 @@ export default function AddTaskAccordion() {
         multiline
         onClick={(event) => event.stopPropagation()}
         onFocus={(event) => event.stopPropagation()}
+        InputProps={{ disableUnderline: true }}
         placeholder="Add Task"
         value={newTaskSummary}
         onChange={handleAddTaskChange}
