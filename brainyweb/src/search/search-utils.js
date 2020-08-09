@@ -72,10 +72,10 @@ const getTaskMatches = (searchText, tasks) => {
     return [];
   }
   const matchingTasks = tasks.filter((task) => {
-    if (task?.taskSummary?.toLowerCase()?.includes(searchText)) {
+    if (task?.taskSummary?.toLowerCase()?.includes(searchText.toLowerCase())) {
       return true;
     }
-    if (task?.taskLog?.toLowerCase()?.includes(searchText)) {
+    if (task?.taskLog?.toLowerCase()?.includes(searchText.toLowerCase())) {
       return true;
     }
     return false;

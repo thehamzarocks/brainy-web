@@ -59,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
     margin: theme.spacing(2),
+    marginTop: theme.spacing(4),
   },
   addFileInput: {
     border: "1px solid #becad6",
