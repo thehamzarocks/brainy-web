@@ -18,7 +18,8 @@ import {
 } from "./store/fileSlice";
 import axios from "axios";
 import { getRenderedResults } from "./search/search-utils";
-import InputBase from '@material-ui/core/InputBase';
+import InputBase from "@material-ui/core/InputBase";
+import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -82,6 +83,10 @@ const useStyles = makeStyles((theme) => ({
   searchIcon: {
     paddingTop: "5px",
     flexGrow: "1",
+  },
+  helpIcon: {
+    padingTop: "7px",
+    // flexGrow: "1"
   },
   category: {
     flexGrow: "2",
@@ -188,7 +193,7 @@ function StartPage() {
           input={<BootstrapInput />}
           className={classes.category}
         >
-          <option value={"Files"}>Files</option>
+          <option value={"Notes"}>Files</option>
           <option value={"Tags"}>Tags</option>
           <option value={"Tasks"}>Tasks</option>
           <option value={"Content"}>Content</option>
@@ -208,6 +213,9 @@ function StartPage() {
         />
         <div className={classes.searchIcon}>
           <SearchIcon />
+        </div>
+        <div className={classes.helpIcon}>
+          <HelpOutlineIcon />
         </div>
       </div>
       <div className={classes.addFileBar}>

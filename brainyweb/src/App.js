@@ -10,7 +10,7 @@ import FileView from "./FileView";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserToken, updateActionStatus, addFiles } from "./store/fileSlice";
-import About from "./Tag";
+import HelpBox from "./Help/HelpBox"
 import { createMuiTheme } from "@material-ui/core/styles";
 import SimpleSnackbar from "./Snackbar";
 
@@ -80,7 +80,7 @@ function App() {
           <Layout>
             <Switch>
               <Route path="/about">
-                <About />
+                <HelpBox />
               </Route>
               <Route path="/start">
                 <StartPage />

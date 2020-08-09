@@ -68,8 +68,14 @@ const getMatchStringFromMatchIndex = (text, index) => {
 };
 
 const getTaskMatches = (searchText, tasks) => {
-  if (!tasks || tasks.length === 0 || !searchText) {
+  if (!tasks || tasks.length === 0) {
     return [];
+  }
+  if(!searchText) {
+    const importantTasks = tasks.filter(task => {
+      return task.taskStatus !== "Completed" && (task.priority < 2 || task.taskDueDate)
+    });
+    return importantTasks;
   }
   const matchingTasks = tasks.filter((task) => {
     if (task?.taskSummary?.toLowerCase()?.includes(searchText.toLowerCase())) {
