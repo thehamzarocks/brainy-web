@@ -27,9 +27,17 @@ const TaskDeleteButton = ({ currentFile, currentTask }) => {
 
   const handleTaskDelete = (event) => {
     event.stopPropagation();
-    const updatedTasksList = currentFile.tasks.filter((task) => {
+    let updatedTasksList = currentFile.tasks.filter((task) => {
       return task.taskId !== currentTask.taskId;
     });
+    const deletedTaskPriority = currentTask.priority;
+    updatedTasksList = updatedTasksList.map(task => {
+      if(task.priority < deletedTaskPriority) {
+        return task;
+      }
+      return {... task, priority: task.priority - 1};
+    })
+    
     const updatedFile = { ...currentFile, tasks: updatedTasksList };
     dispatch(updateFile(updatedFile));
     handlePopupClose(event);
