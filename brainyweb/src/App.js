@@ -13,6 +13,7 @@ import { selectUserToken, updateActionStatus, addFiles } from "./store/fileSlice
 import HelpBox from "./Help/HelpBox"
 import { createMuiTheme } from "@material-ui/core/styles";
 import SimpleSnackbar from "./Snackbar";
+import ShareView from "./ShareView";
 
 const mainTheme = createMuiTheme({
   palette: {
@@ -90,6 +91,9 @@ function App() {
               </Route>
               <Route path="/files/:fileId">
                 <FileView />
+              </Route>
+              <Route path="/share/:fileId">
+                <ShareView />
               </Route>
               <Route path="/">
                 <HomePageContent />

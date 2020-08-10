@@ -66,11 +66,11 @@ const AccordionDetails = withStyles((theme) => ({
   },
 }))(MuiAccordionDetails);
 
-export default function Tag() {
+export default function Tag({fileProp, handleFilePropUpdate}) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const currentFile = useSelector(selectCurrentFile);
+  const currentFile = fileProp ?? useSelector(selectCurrentFile);
   const tagOptions = useSelector(selectTagOptions);
 
   const [expanded, setExpanded] = React.useState("");
@@ -81,6 +81,10 @@ export default function Tag() {
 
   const handleTagChange = (event, newValue) => {
     const updatedFile = { ...currentFile, tags: newValue };
+    if(fileProp) {
+      handleFilePropUpdate(newValue);
+      return;
+    }
     dispatch(updateFile(updatedFile));
   };
 

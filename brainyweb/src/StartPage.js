@@ -214,9 +214,6 @@ function StartPage() {
         <div className={classes.searchIcon}>
           <SearchIcon />
         </div>
-        <div className={classes.helpIcon}>
-          <HelpOutlineIcon />
-        </div>
       </div>
       <div className={classes.addFileBar}>
         <TextField
