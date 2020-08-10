@@ -18,7 +18,7 @@ import {
   updateActionStatus,
   selectAllFiles,
   selectIsDirtyState,
-  clearDirtyState
+  clearDirtyState,
 } from "./store/fileSlice";
 import axios from "axios";
 import Tag from "./Tag";
@@ -90,7 +90,7 @@ function ScatchFile() {
     dispatch(updateCurrentFile(fileId));
     if (matchIndex) {
       scrollToMatch(matchIndex);
-    } else {
+    } else if (currentFile?.tasks?.length > 0) {
       setTabIndex(0);
     }
   }, [dispatch, fileId, scrollToMatch, matchIndex]);
@@ -112,7 +112,7 @@ function ScatchFile() {
     dispatch(
       updateActionStatus({ status: "pending", statusMessage: "Saving File..." })
     );
-    dispatch(clearDirtyState())
+    dispatch(clearDirtyState());
     axios
       .put("https://lyjcnc.deta.dev/files/" + currentFile.key, currentFile, {
         headers: {

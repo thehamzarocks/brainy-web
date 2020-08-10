@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import {
   updateActionStatus,
   selectAllFiles,
@@ -40,6 +40,7 @@ const ShareView = () => {
   const classes = useStyles();
   let { fileId } = useParams();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const files = useSelector(selectAllFiles);
   const userToken = useSelector(selectUserToken);
@@ -128,6 +129,7 @@ const ShareView = () => {
         );
         dispatch(addFiles(updatedFilesList));
         setNewFileName("");
+        history.push("/files/" + response.data.key)
       })
       .catch((error) => {
         dispatch(
@@ -146,6 +148,10 @@ const ShareView = () => {
   const handleTagChange = (newValue) => {
     setSharedFile({ ...sharedFile, tags: newValue });
   };
+
+  if (!userToken) {
+    return <Typography>Sign In to get started</Typography>;
+  }
 
   return (
     <React.Fragment>
