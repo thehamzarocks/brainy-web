@@ -7,8 +7,10 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import SortableComponent from "./sortable";
 import AddTaskAccordion from "./AddTaskAccordion";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import {
   selectFile,
   selectUserToken,
@@ -24,6 +26,7 @@ import axios from "axios";
 import Tag from "./Tag";
 import TabPanel, { tabProp } from "./TabPanel";
 import { Prompt } from "react-router";
+import SharingButton from "./SharingButton";
 
 const useStyles = makeStyles((theme) => ({
   tabPanel: {
@@ -188,8 +191,11 @@ function ScatchFile() {
           <Typography variant="h6">{currentFile.fileName}</Typography>
         </div>
         <div>
+          <SharingButton currentFile={currentFile} />
+        </div>
+        <div>
           <Button onClick={handleDelete} color="default">
-            Delete
+          <DeleteOutlineIcon />
           </Button>
         </div>
         <div>
