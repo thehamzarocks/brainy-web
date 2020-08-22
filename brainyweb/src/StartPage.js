@@ -15,6 +15,7 @@ import {
   selectUserToken,
   addFiles,
   updateActionStatus,
+  selectActionStatus,
 } from "./store/fileSlice";
 import axios from "axios";
 import { getRenderedResults } from "./search/search-utils";
@@ -108,12 +109,22 @@ function StartPage() {
 
   let files = useSelector(selectAllFiles);
   const userToken = useSelector(selectUserToken);
+  const fileFetchState = useSelector(selectActionStatus);
 
   if (!files) {
     files = [];
   }
 
-  const renderedResults = getRenderedResults(files, searchType, searchText);
+  let renderedResults;
+  if (fileFetchState.status === "error") {
+    renderedResults = (
+      <p>Failed to fetch your files, please log in again and try</p>
+    );
+  } else if (fileFetchState.status === "pending") {
+    renderedResults = <p>Fetching Your files</p>;
+  } else {
+    renderedResults = getRenderedResults(files, searchType, searchText);
+  }
 
   const handleSearchTypeChange = (event) => {
     setSearchType(event.target.value);

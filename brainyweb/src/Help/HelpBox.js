@@ -1,27 +1,27 @@
 import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import HelpCard from "./HelpCard";
 
 const useStyles = makeStyles((theme) => ({
   helpSummary: {
     fontSize: 20,
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(2),
   },
   helpCards: {
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
-    alignContent: "space-around"
+    alignContent: "space-around",
   },
   root: {
     minWidth: 275,
   },
   bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -67,6 +67,12 @@ const HelpBox = () => {
           helpTitle="Search for stuff"
           helpText="You've entrusted Brainylog with your memories, now you want them back. You can search by notes, tasks, tags, and information. Enter a search text to
         filter results. Empty search texts will show random matches. Empty note searches will show all your notes. Click on a result to go to it."
+        />
+
+        <HelpCard
+          helpTitle="Share your wisdom"
+          helpText="You can send and receive notes. To send a note, make it shareable by clicking on the lock icon to unlock it. Then, you can click on
+          the clipboard icon to get a shareable link that you can send to your friends. You can make the file private again by clicking on the unlocked icon again."
         />
       </div>
     </React.Fragment>
