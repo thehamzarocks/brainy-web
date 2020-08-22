@@ -145,6 +145,9 @@ export const selectFile = (state, fileId) => {
     return file.key === fileId;
   });
   const copiedFile = { ...selectedFile };
+  if(!copiedFile.fileName) {
+    copiedFile.fileName = "Fetching file...";
+  }
   if (!copiedFile.tags) {
     copiedFile.tags = [];
   }

@@ -37,6 +37,17 @@ function HomePageContent() {
         </Button>
       </Grid>
 
+      <Grid container justify="center">
+        <Link to="/about" style={{ textDecoration: "none" }}>
+          <Button
+            color="primary"
+            className={classes.startButton}
+          >
+            Learn More
+          </Button>
+        </Link>
+      </Grid>
+
       <Typography variant="h5" className={classes.hompageInfo} gutterBottom>
         Log anything, anytime
       </Typography>
@@ -49,18 +60,6 @@ function HomePageContent() {
       <Typography variant="h5" className={classes.hompageInfo} gutterBottom>
         Get Intelligent Reminders
       </Typography>
-
-      <Grid container justify="center">
-        <Link to="/about" style={{ textDecoration: "none" }}>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.startButton}
-          >
-            Learn More
-          </Button>
-        </Link>
-      </Grid>
     </React.Fragment>
   );
 }

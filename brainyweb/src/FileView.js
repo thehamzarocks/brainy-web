@@ -10,7 +10,7 @@ import AddTaskAccordion from "./AddTaskAccordion";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { useParams, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import {
   selectFile,
   selectUserToken,
@@ -27,6 +27,8 @@ import Tag from "./Tag";
 import TabPanel, { tabProp } from "./TabPanel";
 import { Prompt } from "react-router";
 import SharingButton from "./SharingButton";
+import { current } from "@reduxjs/toolkit";
+import { CopyShareableButton } from "./CopyShareableLinkButton";
 
 const useStyles = makeStyles((theme) => ({
   tabPanel: {
@@ -37,11 +39,12 @@ const useStyles = makeStyles((theme) => ({
   },
   fileHeader: {
     display: "flex",
-    flexDirection: "row",
-    margin: theme.spacing(2),
-    marginBottom: theme.spacing(1),
+    flexDirection: "row-reverse",
+    marginLeft: theme.spacing(2),
   },
   fileName: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(1),
     flexGrow: "1",
   },
   tags: {
@@ -188,20 +191,25 @@ function ScatchFile() {
       />
       <div className={classes.fileHeader}>
         <div className={classes.fileName}>
-          <Typography variant="h6">{currentFile.fileName}</Typography>
+          <Typography>{currentFile.fileName}</Typography>
         </div>
-        <div>
-          <SharingButton currentFile={currentFile} />
-        </div>
-        <div>
-          <Button onClick={handleDelete} color="default">
-          <DeleteOutlineIcon />
-          </Button>
-        </div>
-        <div>
+      </div>
+      <div className={classes.fileHeader}>
+      <div>
           <Button onClick={handleSave} color="primary">
             Save
           </Button>
+        </div>
+        <div>
+          <Button onClick={handleDelete} color="default">
+            <DeleteOutlineIcon />
+          </Button>
+        </div>
+        <div>
+          <CopyShareableButton currentFile={currentFile} />
+        </div>
+        <div>
+          <SharingButton currentFile={currentFile} />
         </div>
       </div>
       <div className={classes.tags}>

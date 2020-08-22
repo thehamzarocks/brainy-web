@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Typography } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import LockOpenOutlinedIcon from "@material-ui/icons/LockOpenOutlined";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,11 +17,19 @@ const SharingButton = ({ currentFile }) => {
   const userToken = useSelector(selectUserToken);
 
   if (!userToken) {
-    return <React.Fragment />;
+    return (
+      <Button disabled>
+        <LockOutlinedIcon />
+      </Button>
+    );
   }
 
   if (!currentFile) {
-    return <React.Fragment />;
+    return (
+      <Button disabled>
+        <LockOutlinedIcon />
+      </Button>
+    );
   }
 
   const sharable = currentFile.shared;
