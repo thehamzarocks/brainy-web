@@ -31,13 +31,13 @@ const TaskDeleteButton = ({ currentFile, currentTask }) => {
       return task.taskId !== currentTask.taskId;
     });
     const deletedTaskPriority = currentTask.priority;
-    updatedTasksList = updatedTasksList.map(task => {
-      if(task.priority < deletedTaskPriority) {
+    updatedTasksList = updatedTasksList.map((task) => {
+      if (task.priority < deletedTaskPriority) {
         return task;
       }
-      return {... task, priority: task.priority - 1};
-    })
-    
+      return { ...task, priority: task.priority - 1 };
+    });
+
     const updatedFile = { ...currentFile, tasks: updatedTasksList };
     dispatch(updateFile(updatedFile));
     handlePopupClose(event);

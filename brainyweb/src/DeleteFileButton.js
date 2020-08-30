@@ -7,7 +7,12 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { useDispatch, useSelector } from "react-redux";
-import { updateActionStatus, selectUserToken, deleteFile } from "./store/fileSlice";
+import {
+  updateActionStatus,
+  selectUserToken,
+  deleteFile,
+  clearDirtyState,
+} from "./store/fileSlice";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
 
@@ -16,7 +21,6 @@ const DeleteFileButton = ({ currentFile }) => {
   const dispatch = useDispatch();
   const userToken = useSelector(selectUserToken);
   const history = useHistory();
-
 
   if (!currentFile) {
     return;
@@ -37,12 +41,11 @@ const DeleteFileButton = ({ currentFile }) => {
         statusMessage: "Deleting File...",
       })
     );
-    Axios
-      .delete("https://lyjcnc.deta.dev/files/" + currentFile.key, {
-        headers: {
-          "google-auth-token": userToken,
-        },
-      })
+    Axios.delete("https://lyjcnc.deta.dev/files/" + currentFile.key, {
+      headers: {
+        "google-auth-token": userToken,
+      },
+    })
       .then((response) => {
         console.log("Delete succesful!");
         dispatch(
@@ -52,6 +55,7 @@ const DeleteFileButton = ({ currentFile }) => {
           })
         );
         dispatch(deleteFile(currentFile));
+        dispatch(clearDirtyState());
         history.push("/start");
       })
       .catch((error) => {
