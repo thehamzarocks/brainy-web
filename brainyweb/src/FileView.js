@@ -29,6 +29,7 @@ import { Prompt } from "react-router";
 import SharingButton from "./SharingButton";
 import { current } from "@reduxjs/toolkit";
 import { CopyShareableButton } from "./CopyShareableLinkButton";
+import DeleteFileButton from "./DeleteFileButton";
 
 const useStyles = makeStyles((theme) => ({
   tabPanel: {
@@ -149,40 +150,6 @@ function ScatchFile() {
     }
   };
 
-  const handleDelete = (event) => {
-    dispatch(
-      updateActionStatus({
-        status: "pending",
-        statusMessage: "Deleting File...",
-      })
-    );
-    axios
-      .delete("https://lyjcnc.deta.dev/files/" + currentFile.key, {
-        headers: {
-          "google-auth-token": userToken,
-        },
-      })
-      .then((response) => {
-        console.log("Delete succesful!");
-        dispatch(
-          updateActionStatus({
-            status: "success",
-            statusMessage: "Deleted successfully",
-          })
-        );
-        dispatch(deleteFile(currentFile));
-        history.push("/start");
-      })
-      .catch((error) => {
-        dispatch(
-          updateActionStatus({
-            status: "error",
-            statusMessage: "Error Deleting File",
-          })
-        );
-      });
-  };
-
   return (
     <React.Fragment>
       <Prompt
@@ -195,15 +162,13 @@ function ScatchFile() {
         </div>
       </div>
       <div className={classes.fileHeader}>
-      <div>
+        <div>
           <Button onClick={handleSave} color="primary">
             Save
           </Button>
         </div>
         <div>
-          <Button onClick={handleDelete} color="default">
-            <DeleteOutlineIcon />
-          </Button>
+          <DeleteFileButton currentFile={currentFile} />
         </div>
         <div>
           <CopyShareableButton currentFile={currentFile} />
