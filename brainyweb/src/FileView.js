@@ -121,7 +121,7 @@ function ScatchFile() {
     );
     dispatch(clearDirtyState());
     axios
-      .put("https://lyjcnc.deta.dev/files/" + currentFile.key, currentFile, {
+      .put("https://5q71jg.deta.dev/files/" + currentFile.key, currentFile, {
         headers: {
           "google-auth-token": userToken,
         },

@@ -51,7 +51,7 @@ const SharingButton = ({ currentFile }) => {
         statusMessage: sharedStatusPendingMessage,
       })
     );
-    Axios.put("https://lyjcnc.deta.dev/files/" + updatedFile.key, updatedFile, {
+    Axios.put("https://5q71jg.deta.dev/files/" + updatedFile.key, updatedFile, {
       headers: {
         "google-auth-token": userToken,
       },

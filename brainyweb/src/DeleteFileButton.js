@@ -41,7 +41,7 @@ const DeleteFileButton = ({ currentFile }) => {
         statusMessage: "Deleting File...",
       })
     );
-    Axios.delete("https://lyjcnc.deta.dev/files/" + currentFile.key, {
+    Axios.delete("https://5q71jg.deta.dev/files/" + currentFile.key, {
       headers: {
         "google-auth-token": userToken,
       },

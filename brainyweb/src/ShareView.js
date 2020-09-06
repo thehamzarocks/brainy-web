@@ -63,7 +63,7 @@ const ShareView = () => {
         statusMessage: "Fetching Shared File Info...",
       })
     );
-    Axios.get("https://lyjcnc.deta.dev/files/" + fileId + "?shared=true", {
+    Axios.get("https://5q71jg.deta.dev/files/" + fileId + "?shared=true", {
       headers: {
         "google-auth-token": userToken,
       },
@@ -105,7 +105,7 @@ const ShareView = () => {
       })
     );
     Axios.post(
-      "https://lyjcnc.deta.dev/files/",
+      "https://5q71jg.deta.dev/files/",
       {
         fileName: newFileName,
         userEmail: "",

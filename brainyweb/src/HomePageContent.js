@@ -58,6 +58,9 @@ function HomePageContent() {
         Keep memories at your fingertips
       </Typography>
       <Typography variant="h5" className={classes.hompageInfo} gutterBottom>
+        Share notes for collaborative learning
+      </Typography>
+      <Typography variant="h5" className={classes.hompageInfo} gutterBottom>
         Get Intelligent Reminders
       </Typography>
     </React.Fragment>

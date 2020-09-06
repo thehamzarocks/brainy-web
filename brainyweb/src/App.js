@@ -51,7 +51,7 @@ function App() {
     }
     dispatch(updateActionStatus({status: "pending", statusMessage: "Fetching Your Files..."}));
     axios
-      .get("https://lyjcnc.deta.dev/files/", {
+      .get("https://5q71jg.deta.dev/files/", {
         headers: {
           "google-auth-token": userToken
         }
